@@ -1,29 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>post</title>
-</head>
+  </head>
 
-<body>
-    <ul>
-        {% for post in all_posts %}
-        <li>{{post.id}}</li>
-        <li>{{post.title}}</li>
-        <li>{{post.content}}</li>
-        <li>{{post.postpicture}}</li>
-        <li>{{ post.user }}</li>
-        <li>
-            <a class="btn btn-outline-success" href="{% url 'postDetails' post.id %}">
-                ShowDetails</a>
-        </li>
-        
-        {% endfor %}
+  <body>
+    {% extends 'blogApp/base.html' %} {% load static %} {% block main-block %}
+    <ul class="text-light">
+      {% for post in all_posts %}
+      <li>{{post.id}}</li>
+      <li>{{post.title}}</li>
+      <li>{{post.content}}</li>
+      <li>
+        <img
+          src="{% static 'img/mo2.jpg' %}"
+          width="200px"
+          height="200px"
+          alt="pp"
+        />
+      </li>
+      <li><img src="{{post.postpicture}}" alt="not found"> </li>
+      <li>{{ post.user }}</li>
+      <li>{{ post.post_date }}</li>
+      <div class="row container-fluid">
+        <div class="col-3">
+          <li>
+            <a
+              class="btn btn-outline-success"
+              href="{% url 'postDetails' post.id %}"
+            >
+              ShowDetails</a
+            >
+          </li>
+        </div>
+        <div class="col-3">
+          <li>
+            <a
+              class="btn btn-outline-success"
+              href="{% url 'editPost' post.id %}"
+            >
+              editPost</a
+            >
+          </li>
+        </div>
+        <div class="col-3">
+          <li>
+            <a
+              class="btn btn-outline-success"
+              href="{% url 'deletePost' post.id %}"
+            >
+              deletePost</a
+            >
+          </li>
+        </div>
+      </div>
+
+      <hr />
+      <hr />
+      {% endfor %}
     </ul>
-
-</body>
-
+    <a class="btn btn-outline-success" href="{% url 'addPost' %}"> Add POST</a>
+    {% endblock %}
+  </body>
 </html>
