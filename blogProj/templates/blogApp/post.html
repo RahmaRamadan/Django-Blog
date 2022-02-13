@@ -14,15 +14,7 @@
       <li>{{post.id}}</li>
       <li>{{post.title}}</li>
       <li>{{post.content}}</li>
-      <li>
-        <img
-          src="{% static 'img/mo2.jpg' %}"
-          width="200px"
-          height="200px"
-          alt="pp"
-        />
-      </li>
-      <li><img src="{{post.postpicture}}" alt="not found"> </li>
+      <li><img src='{{ MEDIA_URL }}{{ post.postpicture }}' width="300px" height="300px"></li>
       <li>{{ post.user }}</li>
       <li>{{ post.post_date }}</li>
       <div class="row container-fluid">
