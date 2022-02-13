@@ -21,7 +21,7 @@ class Tag(models.Model):
     
 class Post(models.Model):
     title = models.CharField(max_length=50)
-    postpicture = models.ImageField(upload_to='blogApp/static/img/')
+    postpicture = models.FileField(upload_to='images/', null=True, verbose_name="")
     content = models.CharField(max_length=300)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)

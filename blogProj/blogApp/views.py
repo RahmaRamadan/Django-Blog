@@ -79,7 +79,7 @@ def deletePost(request,post_id):
  
 def addPost(request):
     if(request.method == 'POST'):
-        form=PostForm(request.POST)
+        form=PostForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             form.save()
             return redirect('post')
