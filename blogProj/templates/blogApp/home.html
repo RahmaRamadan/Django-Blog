@@ -1,6 +1,6 @@
 {% extends 'blogApp/base.html' %}
 
 
-{% block main-block %}
-    <h1 class="text-success">This is Home.html template file</h1>
-{%endblock%}
+{% block content %}
+    <h1 class="text-success">This is Home.html template file {{ usr.username }}</h1>
+{% endblock %}
