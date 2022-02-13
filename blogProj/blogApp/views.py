@@ -2,13 +2,15 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 #User Form Imports used in auth
-from .forms import UserForm
+from .forms import UserForm , PostForm
 #authentications import
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-
+from django.views.generic import ListView,DetailView
+#models
+from .models import Post
 #auth Views here.
 def loginPg(request):
     if request.user.is_authenticated:
@@ -53,4 +55,53 @@ def signupPg(request):
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
+
     return render(request,'blogApp/home.html')
+
+def post(request):
+    all_posts = Post.objects.all()
+    context = {'all_posts': all_posts}
+    return render(request ,'blogApp/post.html',context)
+
+def postDetails(request,post_id):
+    post = Post.objects.get(id=post_id)
+
+    context = {'post': post}
+    return render(request ,'blogApp/postDetails.html',context)
+
+
+
+
+def deletePost(request,post_id):
+    post=Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('home')
+ 
+def addPost(request):
+    if(request.method == 'POST'):
+        form=PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('post')
+        else:
+            return redirect('home')
+
+    else:
+        form=PostForm()
+        context={'form' : form}
+        return render(request, 'blogApp/addPost.html',context)
+ 
+# def editPost(request,post_id):
+#     post=Post.objects.get(id=post_id)
+#     if (request.method == 'POST'):
+#         form=PostForm(request.POST, instance=post)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('post')
+#         else:
+#             return redirect('home')
+#     else:
+#         form=PostForm(instance=post)
+#         context={'form' : form}
+#         return render(request, 'blogApp/editPost.html', context)
+
