@@ -1,6 +1,6 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User
+from .models import User,Category,Post,Comment,Tag
 # # Register your models here.
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -9,7 +9,41 @@ class UserAdmin(admin.ModelAdmin):
     list_display=("username","email","password")
     list_filter=["username","email"]
     search_fields=["username","password"]
+
+class CategoryAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ["category info", {'fields':["name","followers"]}],
+    )
+    # list_display=("name","followers")
+    search_fields=["name"]
+
+class PostAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ["post info", {'fields':["title","postpicture","content","category","tags","user"]}],
+    )
+    # list_display=("title","postpicture","content","category","tags","user","date")
+    search_fields=["user"]
+
+class CommentAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ["comment info", {'fields':["body","post","user"]}],
+    )
+    list_display=("body","post","user")
+    search_fields=["post","user"]
+
+
+class TagAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ["tag info", {'fields':["name"]}],
+    )
+   
+
+
 admin.site.register(User,UserAdmin)
+admin.site.register( Category,CategoryAdmin)
+admin.site.register( Post,PostAdmin)
+admin.site.register( Comment,CommentAdmin)
+admin.site.register( Tag,TagAdmin)
 
 
 
@@ -21,21 +55,6 @@ admin.site.register(User,UserAdmin)
 
 
 
-# class StudentAdmin(admin.ModelAdmin):
-#     fieldsets=(
-#     ["student Information",{'fields':["fname","lname","age"]}],
-#     ["Scholarship Information",{'fields':["student_track"]}]
-#     )
-#     list_display=("fname","lname","age","student_track","is_graduate")
-#     list_filter=["fname","age","student_track"]
-#     search_fields=["fname","age","student_track__track_name"]
-# class InlineStudent(admin.StackedInline):
-#     model=Student
-#     extra =2
-# class TrackAdmin(admin.ModelAdmin):
-#     inlines=[InlineStudent]
 
-    
-# admin.site.register(Student,StudentAdmin)
-# admin.site.register(Track,TrackAdmin)
+
 
