@@ -59,7 +59,7 @@ def home(request):
     return render(request,'blogApp/home.html')
 
 def post(request):
-    all_posts = Post.objects.all()
+    all_posts = Post.objects.all().order_by('-id')
     context = {'all_posts': all_posts}
     return render(request ,'blogApp/post.html',context)
 
@@ -75,7 +75,7 @@ def postDetails(request,post_id):
 def deletePost(request,post_id):
     post=Post.objects.get(id=post_id)
     post.delete()
-    return redirect('home')
+    return redirect('post')
  
 def addPost(request):
     if(request.method == 'POST'):
@@ -91,17 +91,17 @@ def addPost(request):
         context={'form' : form}
         return render(request, 'blogApp/addPost.html',context)
  
-# def editPost(request,post_id):
-#     post=Post.objects.get(id=post_id)
-#     if (request.method == 'POST'):
-#         form=PostForm(request.POST, instance=post)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('post')
-#         else:
-#             return redirect('home')
-#     else:
-#         form=PostForm(instance=post)
-#         context={'form' : form}
-#         return render(request, 'blogApp/editPost.html', context)
+def editPost(request,post_id):
+    post=Post.objects.get(id=post_id)
+    if (request.method == 'POST'):
+        form=PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post')
+        else:
+            return redirect('home')
+    else:
+        form=PostForm(instance=post)
+        context={'form' : form}
+        return render(request, 'blogApp/editPost.html', context)
 

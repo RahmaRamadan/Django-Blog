@@ -9,12 +9,14 @@
 </head>
 
 <body>
-    <form method="POST" class="text-light text-center"> {% csrf_token %}
+    {% extends 'blogApp/base.html' %}
+    {% block main-block %}
+    <form method="POST" class="text-light text-center" enctype="multipart/form-data"> {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-success" type="submit">Submit</button>
         <button class="btn btn-danger" type="reset">Reset</button> <br>
         <a class="btn btn-outline-light mt-2" href="{% url 'post' %}">Back Post</a>
     </form>
+    {% endblock %}
 </body>
-
 </html>

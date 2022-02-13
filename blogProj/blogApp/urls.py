@@ -8,7 +8,7 @@ urlpatterns = [
     path('postDetails/<post_id>',views.postDetails , name='postDetails'),
     path('addPost',views.addPost , name='addPost'),
     path('deletePost/<post_id>',views.deletePost, name='deletePost'),
-    # path('editPost/<post_id>',views.editPost , name='editPost'),
+    path('editPost/<post_id>',views.editPost , name='editPost'),
     
     #auth urls
     path('login',views.loginPg , name='login'),
