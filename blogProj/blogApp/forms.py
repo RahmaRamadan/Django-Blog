@@ -1,7 +1,7 @@
 from dataclasses import fields
 from re import L
 from django import forms
-from .models import Post
+from .models import Post ,Comment
 #auth import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -20,3 +20,11 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('__all__')
         # fields = ('title','content','category','user','tags','postpicture')
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('body',)
+
+        

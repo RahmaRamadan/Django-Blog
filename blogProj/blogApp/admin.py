@@ -26,7 +26,7 @@ class PostAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
-        ["comment info", {'fields':["body","post","user"]}],
+        ["comment info", {'fields':["body","post","user","date_added"]}],
     )
     list_display=("body","post","user")
     search_fields=["post","user"]
