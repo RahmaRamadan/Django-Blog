@@ -52,14 +52,24 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post_date = models.DateField(auto_now_add=True)
-    # date = models.DateField()
     def __str__(self):
-        return self.title + '|' + str(self.user)
+        return self.title + ' | ' + str(self.user)
+
+
     
 class Comment(models.Model):
     class Meta:
-        ordering = ['pk']
+      ordering = ['pk']
     body = models.TextField()
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,related_name='comments', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=False)
+#     class Meta: 
+#         ordering = ('date_added',) 
+       
+    def __str__(self):
+        return self.post.title 
+
+
+
 

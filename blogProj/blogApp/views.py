@@ -3,8 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 #User Form Imports used in auth
-from .forms import UserForm , PostForm
-from .models import User, Category, Post
+from .forms import UserForm , PostForm ,CommentForm
 #authentications import
 from django.contrib.auth.forms import UserCreationForm 
 from django.contrib import messages
@@ -12,6 +11,10 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView,DetailView
 #models
+from .models import Post , User ,Comment,Category
+#
+from django.views.generic.edit  import CreateView
+
 #auth Views here.
 def loginPg(request):
     if request.user.is_authenticated:
@@ -108,12 +111,14 @@ def postDetails(request,post_id):
 
 
 
-
+@login_required(login_url='login')
 def deletePost(request,post_id):
     post=Post.objects.get(id=post_id)
     post.delete()
     return redirect('post')
- 
+
+
+@login_required(login_url='login')
 def addPost(request):
     if(request.method == 'POST'):
         form=PostForm(request.POST or None, request.FILES or None)
@@ -127,7 +132,9 @@ def addPost(request):
         form=PostForm()
         context={'form' : form}
         return render(request, 'blogApp/addPost.html',context)
- 
+
+
+@login_required(login_url='login')
 def editPost(request,post_id):
     post=Post.objects.get(id=post_id)
     if (request.method == 'POST'):
@@ -142,3 +149,36 @@ def editPost(request,post_id):
         context={'form' : form}
         return render(request, 'blogApp/editPost.html', context)
 
+
+# @login_required(login_url='login')
+
+class AddCommentView(CreateView):
+    model = Comment
+    template_name =  'blogApp/addComment.html'
+    fields = '__all__'
+    # fields = ('body',)
+
+
+# def addComment(request,post_id):
+#     post=Post.objects.get(id=post_id)
+#     # new_comment = None
+#     if(request.method == 'POST'):
+#         # form = CommentForm(data=request.POST)
+#         form=CommentForm(request.POST, instance=post)
+#         if form.is_valid():
+#             # Create Comment object but don't save to database yet          
+#             # new_comment = form.save(commit=False)
+#             # Assign the current post to the comment
+#             # new_comment.post = post
+#             # Save the comment to the database
+#             # new_comment.save()
+#             form.save()
+#             return redirect('post')
+#         else:
+#             return redirect('home')
+
+#     else:
+#         form=CommentForm(instance=post)
+#         # form=CommentForm()
+#         context={'form' : form , 'post' : post}
+#         return render(request, 'blogApp/addComment.html',context)

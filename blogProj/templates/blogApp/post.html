@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>post</title>
-  </head>
-
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>post</title>
+</head>
   <body>
     {% extends 'blogApp/base.html' %} {% load static %} {% block content %}
     <ul class="text-dark">
@@ -49,12 +48,32 @@
           </li>
         </div>
       </div>
+      <div class="col-3">
+        <li>
+          <a class="btn btn-outline-success" href="{% url 'deletePost' post.id %}">
+            deletePost</a>
+        </li>
+      </div>
 
-      <hr />
-      <hr />
-      {% endfor %}
-    </ul>
-    <a class="btn btn-outline-success" href="{% url 'addPost' %}"> Add POST</a>
-    {% endblock %}
-  </body>
+     
+      <div class="col-3">
+        <li>
+          <a class="btn btn-outline-success" href="{% url 'addComment' post.id %}">
+            add comment
+          </a>
+        
+
+        </li>
+      </div>
+      {% endif  %}
+    </div>
+
+    <hr />
+    <hr />
+    {% endfor %}
+  </ul>
+  <a class="btn btn-outline-success" href="{% url 'addPost' %}"> Add POST</a>
+  {% endblock %}
+</body>
+
 </html>
