@@ -1,6 +1,9 @@
 from dataclasses import fields
 from re import L
 from django import forms
+
+# auth import
+from .models import Post
 # auth import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -35,3 +38,13 @@ class CategoryForm(forms.ModelForm):
             'follower': forms.Select(attrs={'class': 'form-control'}),
 
         }
+        fields = ('username', 'email', 'first_name',
+                  'last_name', 'password1', 'password2')
+        # fields = ('__all__')
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('__all__')
+        # fields = ('title','content','category','user','tags','postpicture')

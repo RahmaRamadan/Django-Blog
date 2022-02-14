@@ -2,18 +2,17 @@ from multiprocessing import context
 from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-# User Form Imports used in auth
-from .forms import UserForm
-from .models import User, Category
-# authentications import
-from django.contrib.auth.forms import UserCreationForm
+#User Form Imports used in auth
+from .forms import UserForm , PostForm
+from .models import User, Category, Post
+#authentications import
+from django.contrib.auth.forms import UserCreationForm 
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-
-# auth Views here.
-
-
+from django.views.generic import ListView,DetailView
+#models
+#auth Views here.
 def loginPg(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -94,4 +93,52 @@ def userDetails(request):
     return render(request, 'blogApp/sports.html', context)
     # context = {'student': loginUser} to send and display user data
 
+    # return render(request,'blogApp/home.html')
+
+def post(request):
+    all_posts = Post.objects.all().order_by('-id')
+    context = {'all_posts': all_posts}
+    return render(request ,'blogApp/post.html',context)
+
+def postDetails(request,post_id):
+    post = Post.objects.get(id=post_id)
+
+    context = {'post': post}
+    return render(request ,'blogApp/postDetails.html',context)
+
+
+
+
+def deletePost(request,post_id):
+    post=Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('post')
+ 
+def addPost(request):
+    if(request.method == 'POST'):
+        form=PostForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            form.save()
+            return redirect('post')
+        else:
+            return redirect('home')
+
+    else:
+        form=PostForm()
+        context={'form' : form}
+        return render(request, 'blogApp/addPost.html',context)
+ 
+def editPost(request,post_id):
+    post=Post.objects.get(id=post_id)
+    if (request.method == 'POST'):
+        form=PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post')
+        else:
+            return redirect('home')
+    else:
+        form=PostForm(instance=post)
+        context={'form' : form}
+        return render(request, 'blogApp/editPost.html', context)
 
