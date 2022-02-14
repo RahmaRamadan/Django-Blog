@@ -10,7 +10,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView,DetailView
 #models
-from .models import Post , User
+from .models import Post , User ,Comment
+#
+from django.views.generic.edit  import CreateView
 #auth Views here.
 def loginPg(request):
     if request.user.is_authenticated:
@@ -110,27 +112,35 @@ def editPost(request,post_id):
         return render(request, 'blogApp/editPost.html', context)
 
 
-@login_required(login_url='login')
-def addComment(request,post_id):
-    post=Post.objects.get(id=post_id)
-    # new_comment = None
-    if(request.method == 'POST'):
-        # form = CommentForm(data=request.POST)
-        form=CommentForm(request.POST, instance=post)
-        if form.is_valid():
-            # Create Comment object but don't save to database yet          
-            # new_comment = form.save(commit=False)
-            # Assign the current post to the comment
-            # new_comment.post = post
-            # Save the comment to the database
-            # new_comment.save()
-            form.save()
-            return redirect('post')
-        else:
-            return redirect('home')
+# @login_required(login_url='login')
 
-    else:
-        form=CommentForm(instance=post)
-        # form=CommentForm()
-        context={'form' : form , 'post' : post}
-        return render(request, 'blogApp/addComment.html',context)
+class AddCommentView(CreateView):
+    model = Comment
+    template_name =  'blogApp/addComment.html'
+    fields = '__all__'
+    # fields = ('body',)
+
+
+# def addComment(request,post_id):
+#     post=Post.objects.get(id=post_id)
+#     # new_comment = None
+#     if(request.method == 'POST'):
+#         # form = CommentForm(data=request.POST)
+#         form=CommentForm(request.POST, instance=post)
+#         if form.is_valid():
+#             # Create Comment object but don't save to database yet          
+#             # new_comment = form.save(commit=False)
+#             # Assign the current post to the comment
+#             # new_comment.post = post
+#             # Save the comment to the database
+#             # new_comment.save()
+#             form.save()
+#             return redirect('post')
+#         else:
+#             return redirect('home')
+
+#     else:
+#         form=CommentForm(instance=post)
+#         # form=CommentForm()
+#         context={'form' : form , 'post' : post}
+#         return render(request, 'blogApp/addComment.html',context)

@@ -16,8 +16,7 @@
         enctype="multipart/form-data"
       >
         {% csrf_token %}{{ form.as_p }} 
-        <!-- <a class="btn btn-outline-success" href="{% url 'postDetails' post.id %}" type="submit">
-            Submit</a> -->
+       
         <button class="btn btn-success" type="submit">Submit</button>
         <button class="btn btn-danger" type="reset">Reset</button> <br />
       

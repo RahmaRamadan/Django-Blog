@@ -29,6 +29,8 @@ class Post(models.Model):
     post_date = models.DateField(auto_now_add=True)
     def __str__(self):
         return self.title + ' | ' + str(self.user)
+
+
     
 class Comment(models.Model):
     body = models.TextField()
