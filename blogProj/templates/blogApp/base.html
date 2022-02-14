@@ -52,6 +52,7 @@
     </style>
   </head>
   <body class="bg-light">
+    {% include 'blogApp/header.html' %}
     <div class="sidenav">
       <a href="{% url 'home' %}">Home</a>
       <a href="{% url 'redirect_news' %}">News</a>
@@ -63,11 +64,12 @@
       <div class="row container-fluid">
         <div class="col-12">
           <hr class="mt-0 mb-4" />
-          {% block content %} {% endblock %}
+          {% block content %} 
+          {% endblock %}
+         
         </div>
       </div>
     </div>
-
-    <!-- {% include 'blogApp/footer.html' %} -->
+    {% include 'blogApp/footer.html' %}
   </body>
 </html>

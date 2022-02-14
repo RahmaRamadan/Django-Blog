@@ -45,6 +45,14 @@ class PostForm(forms.ModelForm):
         model = Post
         # fields = ('__all__')
         fields = ('title','content','category','user','tags','postpicture')
+        # widgets = {
+        #     'title': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'content': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'category':forms.Select(attrs={'class': 'form-control'}),
+        #     'user' : forms.Select(attrs={'class':'form-control'}),
+        #     'tags':forms.Select(attrs={'class': 'form-control'}),
+        #     'postpicture':forms.ClearableFileInput(attrs={'class': 'form-control'})
+        # }
 
 
 class CommentForm(forms.ModelForm):
