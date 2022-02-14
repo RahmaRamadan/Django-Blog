@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
@@ -59,11 +60,12 @@ def signupPg(request):
 
 
 @login_required(login_url='login')
-#render home page with current logged user
+# render home page with current logged user
 def home(request):
+    userDetails(request)
     current_user = request.user
+    # name = current_user.username
     context = {'usr': current_user}
-    
     return render(request, 'blogApp/home.html', context)
 
 
@@ -81,22 +83,15 @@ def redirectSports(request):
 def redirectPolitics(request):
     return render(request, 'blogApp/politics.html')
 
+
 @login_required(login_url='login')
-def userDetails(request, usr_id):
-    loginUser = User.objects.get(id=usr_id)
-    all_user = Category.followers
+def userDetails(request):
+    log_user = request.user.id 
+    # all_users = Category.followers.all()
+    # context = {'log': log_user}
+    all_users = User.objects.values_list('id')
+    context = {'users': all_users}
+    return render(request, 'blogApp/sports.html', context)
     # context = {'student': loginUser} to send and display user data
-    # return render(request, 'dj_app/details.html', context)
 
 
-
-# @login_required(login_url='login')
-# def addStudent(request):
-#     if request.method == 'POST':
-#         form = StudentsForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('home')
-#     form = StudentsForm()
-#     context = {'form': form}
-#     return render(request, 'dj_app/add.html', context)

@@ -13,4 +13,5 @@ urlpatterns = [
     path('news/',views.redirectNews , name='redirect_news'),
     path('politics/',views.redirectPolitics , name='redirect_politics'),
 
+
 ]
