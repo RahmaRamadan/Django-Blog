@@ -18,8 +18,8 @@ class UserForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('__all__')
-        # fields = ('title','content','category','user','tags','postpicture')
+        # fields = ('__all__')
+        fields = ('title','content','category','user','tags','postpicture')
 
 
 class CommentForm(forms.ModelForm):

@@ -25,6 +25,7 @@
             ShowDetails</a>
         </li>
       </div>
+      {% if user.is_authenticated %}
       <div class="col-3">
         <li>
           <a class="btn btn-outline-success" href="{% url 'editPost' post.id %}">
@@ -38,7 +39,7 @@
         </li>
       </div>
 
-     {% if user.is_authenticated %}
+     
       <div class="col-3">
         <li>
           <a class="btn btn-outline-success" href="{% url 'addComment' post.id %}">

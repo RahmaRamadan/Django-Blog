@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content}}<p>
-    <img src="{{ post.postpicture }}"/>
-    <p>{{ post.category }}<p>
-    <p>{{ post.tags }}</p>
-    <p>{{ post.user }}</p>
-    <p>{{ post.post_date }}</p>
-    <div>
-       <h3>Comments</h3>
-       {% if not post.comments.all %}
-          no comments yet 
-        {% else %}
-            {% for comment in post.comments.all  %}
-               <strong> {{ comment.date_added }}</strong>
-               <br />
-               {{ comment.body }}
+    {% extends 'blogApp/base.html' %}
+    {% block main-block %}
+    <div class="text-light">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.content}}</p>
+        <li><img src='{{ MEDIA_URL }}{{ post.postpicture }}' width="300px" height="300px"></li>
+        <li><strong>category: </strong><span>{{ post.category }}</span></li>
+        <li><strong>Tags: </strong><span>{{ post.tags }}</span></li>
+        <li><strong>Author: </strong><span>{{ post.user }}</span></li>
+        <li><strong>Posted on: </strong><span>{{ post.post_date }}</span></li>
+        <div>
+            <h4>Comments</h4>
+            {% if not post.comments.all %}
+            no comments yet
+            {% else %}
+            {% for comment in post.comments.all %}
+            <strong> {{ comment.date_added }}</strong>
+            <br />
+            {{ comment.body }}
             {% endfor %}
-        {% endif  %}
+            {% endif %}
+        </div>
+        <br/>
+        <a class="btn btn-outline-success" href="{% url 'post' %}">Back</a>
     </div>
-    <a href="{% url 'post' %}">Back</a>
-    
+    {%endblock%}
+
 </body>
+
 </html>
