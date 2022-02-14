@@ -63,6 +63,3 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
-# student_track = models.ForeignKey(Tracks, on_delete=models.CASCADE)
-
