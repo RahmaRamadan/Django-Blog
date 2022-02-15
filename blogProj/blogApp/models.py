@@ -15,6 +15,8 @@ from django.contrib.auth.models import User
 #     def __str__(self):
 #         return self.username
 class Category(models.Model):
+    class Meta:
+        ordering = ['pk']
     name = models.CharField(max_length=50)
     followers = models.ManyToManyField(User, through='UsersCategories')
 
@@ -32,6 +34,8 @@ class UsersCategories(models.Model):
 
 
 class Tag(models.Model):
+    class Meta:
+        ordering = ['pk']
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -39,6 +43,8 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
+    class Meta:
+        ordering = ['pk']
     title = models.CharField(max_length=50)
     postpicture = models.FileField(
         upload_to='images/', null=True, verbose_name="")
