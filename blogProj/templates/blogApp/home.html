@@ -11,9 +11,13 @@
     {% extends 'blogApp/base.html' %}
     {% block content %}
     {% if user.is_authenticated %}
-        <h1 class="text-success">Hello, {{ usr.username }}</h1>
+        {% if request.user.is_staff %}
+            <h1 class="text-primary">You are StaffUser Do what you want, {{ usr.username }}</h1>
+        {% else %}
+            <h1 class="text-success">Hello, {{ usr.username }}</h1>
+        {% endif %}
     {% else %}
-    <h1 class="text-danger">You are not logged in </h1>
+            <h1 class="text-danger">You are not logged in </h1>
     {% endif %}
 {% endblock %}
 </body>
