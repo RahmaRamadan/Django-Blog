@@ -75,21 +75,22 @@ def home(request):
 
 @login_required(login_url='login')
 def redirectNews(request):
-    log_user = request.user.username
-    catgory_name = "news"
-    found = False
-    all_categories = Category.objects.all()
-    for cat in all_categories:
-        if cat.name == catgory_name:
-            for follwer in cat.followers:
-                if cat.followers.username == log_user:
-                    found = True
-                    return render(request, 'blogApp/subscribeOutput.html')
-                else:
-                    found = True
-                    return render(request, 'blogApp/notsubscribeOutput.html')
-    if found == False:
-        return "False"
+    # log_user = request.user.username
+    # catgory_name = "news"
+    # found = False
+    # all_categories = Category.objects.all()
+    # for cat in all_categories:
+    #     if cat.name == catgory_name:
+    #         for follwer in cat.followers:
+    #             if cat.followers.username == log_user:
+    #                 found = True
+    #                 return render(request, 'blogApp/subscribeOutput.html')
+    #             else:
+    #                 found = True
+    #                 return render(request, 'blogApp/notsubscribeOutput.html')
+    # if found == False:
+    #     return "False"
+    return render(request, 'blogApp/news.html')
 
 
 @login_required(login_url='login')
