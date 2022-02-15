@@ -1,21 +1,32 @@
 from multiprocessing import context
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-#User Form Imports used in auth
-from .forms import UserForm , PostForm ,CommentForm
-#authentications import
-from django.contrib.auth.forms import UserCreationForm 
+# User Form Imports used in auth
+from .forms import UsersForm, PostForm, CommentForm
+# authentications import
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView,DetailView
-#models
-from .models import Post , User ,Comment,Category
+from django.views.generic import ListView, DetailView
+# models
+from .models import Post, User, Comment, Category
 #
 from django.views.generic.edit  import CreateView
-from django.urls import reverse_lazy
-#auth Views here.
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse,reverse_lazy
+
+
+#likePost View
+def LikeView(request, post_id):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('postDetails', args=[str(post_id)]))
+
+
+
 def loginPg(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -45,9 +56,9 @@ def signupPg(request):
     if request.user.is_authenticated:
         return redirect('home')
     else:
-        signup_form = UserForm()
+        signup_form = UsersForm()
         if(request.method == 'POST'):
-            signup_form = UserForm(request.POST)
+            signup_form = UsersForm(request.POST)
             if(signup_form.is_valid()):
                 signup_form.save()
                 msg = 'User account created for username: ' + \
@@ -61,7 +72,7 @@ def signupPg(request):
 # Create your views here.
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 # render home page with current logged user
 def home(request):
     userDetails(request)
@@ -73,47 +84,60 @@ def home(request):
 
 @login_required(login_url='login')
 def redirectNews(request):
+    # log_user = request.user.username
+    # catgory_name = "news"
+    # found = False
+    # all_categories = Category.objects.all()
+    # for cat in all_categories:
+    #     if cat.name == catgory_name:
+    #         for follwer in cat.followers:
+    #             if cat.followers.username == log_user:
+    #                 found = True
+    #                 return render(request, 'blogApp/subscribeOutput.html')
+    #             else:
+    #                 found = True
+    #                 return render(request, 'blogApp/notsubscribeOutput.html')
+    # if found == False:
+    #     return "False"
     return render(request, 'blogApp/news.html')
 
 
 @login_required(login_url='login')
 def redirectSports(request):
+    catgory_name = "sports"
     return render(request, 'blogApp/sports.html')
 
 
 @login_required(login_url='login')
 def redirectPolitics(request):
+    catgory_name = "politics"
     return render(request, 'blogApp/politics.html')
 
 
 @login_required(login_url='login')
 def userDetails(request):
-    log_user = request.user.id 
-    # all_users = Category.followers.all()
-    # context = {'log': log_user}
-    all_users = User.objects.values_list('id')
-    context = {'users': all_users}
-    return render(request, 'blogApp/sports.html', context)
-    # context = {'student': loginUser} to send and display user data
+    log_user = request.user.id
+    all_users = User.objects.all()
 
-    # return render(request,'blogApp/home.html')
+    return True
+
 
 def post(request):
     all_posts = Post.objects.all().order_by('-id')
     context = {'all_posts': all_posts}
-    return render(request ,'blogApp/post.html',context)
+    return render(request, 'blogApp/post.html', context)
 
-def postDetails(request,post_id):
+
+def postDetails(request, post_id):
     post = Post.objects.get(id=post_id)
 
     context = {'post': post}
-    return render(request ,'blogApp/postDetails.html',context)
-
+    return render(request, 'blogApp/postDetails.html', context)
 
 
 @login_required(login_url='login')
-def deletePost(request,post_id):
-    post=Post.objects.get(id=post_id)
+def deletePost(request, post_id):
+    post = Post.objects.get(id=post_id)
     post.delete()
     return redirect('post')
 
@@ -121,32 +145,34 @@ def deletePost(request,post_id):
 @login_required(login_url='login')
 def addPost(request):
     if(request.method == 'POST'):
-        form=PostForm(request.POST or None, request.FILES or None)
+        form = PostForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            form.save()
+            post=form.save(commit=False)
+            post.user = request.user
+            post.save()
             return redirect('post')
         else:
             return redirect('home')
 
     else:
         form=PostForm()
-        context={'form' : form}
+        context={'form' : form,}
         return render(request, 'blogApp/addPost.html',context)
 
 
 @login_required(login_url='login')
-def editPost(request,post_id):
-    post=Post.objects.get(id=post_id)
+def editPost(request, post_id):
+    post = Post.objects.get(id=post_id)
     if (request.method == 'POST'):
-        form=PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
             return redirect('post')
         else:
             return redirect('home')
     else:
-        form=PostForm(instance=post)
-        context={'form' : form}
+        form = PostForm(instance=post)
+        context = {'form': form}
         return render(request, 'blogApp/editPost.html', context)
 
 
@@ -166,6 +192,7 @@ class AddCommentView(CreateView):
    
 
 
+
 # def addComment(request,post_id):
 #     post=Post.objects.get(id=post_id)
 #     # new_comment = None
@@ -173,7 +200,7 @@ class AddCommentView(CreateView):
 #         # form = CommentForm(data=request.POST)
 #         form=CommentForm(request.POST, instance=post)
 #         if form.is_valid():
-#             # Create Comment object but don't save to database yet          
+#             # Create Comment object but don't save to database yet
 #             # new_comment = form.save(commit=False)
 #             # Assign the current post to the comment
 #             # new_comment.post = post

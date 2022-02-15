@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import AddCommentView 
+from .views import AddCommentView, LikeView
 
 
 urlpatterns = [
@@ -14,6 +14,8 @@ urlpatterns = [
     # path('addComment/<post_id>',views.addComment , name='addComment'),
     path('addComment/<int:pk>/',AddCommentView.as_view(), name='addComment'),
 
+    #likePost URl
+    path('like/<post_id>', LikeView , name='like_post'),
     #auth urls
     path('login',views.loginPg , name='login'),
     path('signup',views.signupPg , name='signup'),
