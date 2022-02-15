@@ -1,6 +1,6 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User,Category,Post,Comment,Tag, UsersCategorie
+from .models import User,Category,Post,Comment,Tag, UsersCategories
 
 
 
@@ -16,13 +16,12 @@ class UserCategoryInline(admin.TabularInline):
 #     search_fields = ["username"]
 #     inlines = (UserCategoryInline,)
 
-
 class CategoryAdmin(admin.ModelAdmin):
-    fieldsets = (
-        ["category info", {'fields':["name","followers"]}],
-    )
-    # list_display=("name","followers")
-    search_fields=["name"]
+
+    list_display = ('id', 'name', 'show_followers')
+    list_filter = ["name"]
+    search_fields = ["name"]
+    inlines = (UserCategoryInline,)
 
 # class PostAdmin(admin.ModelAdmin):
 #     fieldsets = (
