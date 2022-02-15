@@ -12,18 +12,15 @@ from django.contrib.auth.models import User
 #     username = models.CharField(max_length=100)
 #     email = models.CharField(max_length=100)
 #     password = models.CharField(max_length=100)
+#     checkpassword = models.CharField(max_length=100)
 
 #     def __str__(self):
 #         return self.username
-
-
 class Category(models.Model):
     class Meta:
         ordering = ['pk']
     name = models.CharField(max_length=50)
-    followers = models.ManyToManyField(User)
-    def __str__(self):
-        return self.name 
+    followers = models.ManyToManyField(User, through='UsersCategories')
     
     def __str__(self):
         return self.name
@@ -72,7 +69,3 @@ class Comment(models.Model):
        
     def __str__(self):
         return self.post.title 
-
-
-
-
