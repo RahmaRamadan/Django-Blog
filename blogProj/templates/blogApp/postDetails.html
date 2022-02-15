@@ -35,7 +35,7 @@
            No Comments Yet :( 
                {% else %}
                 {% for comment in post.comments.all %}
-          <strong> {{ comment.date_added }}</strong>
+          <!-- <strong> {{ comment.date_added }}</strong> -->
           <br />
           {{ comment.body }} {% endfor %} {% endif %}
         </div>
@@ -49,6 +49,9 @@
       <a class="btn btn-danger" href="{% url 'deletePost' post.id %}">
         Delete</a
       >
+      <a class="btn btn-dark col-2 p-2" href="{% url 'addComment' post.id %}">
+        Add Comment
+      </a>
     {%endblock%}
   </body>
 </html>

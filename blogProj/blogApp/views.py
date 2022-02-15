@@ -14,7 +14,7 @@ from django.views.generic import ListView,DetailView
 from .models import Post , User ,Comment,Category
 #
 from django.views.generic.edit  import CreateView
-
+from django.urls import reverse_lazy
 #auth Views here.
 def loginPg(request):
     if request.user.is_authenticated:
@@ -155,8 +155,15 @@ def editPost(request,post_id):
 class AddCommentView(CreateView):
     model = Comment
     template_name =  'blogApp/addComment.html'
-    fields = '__all__'
-    # fields = ('body',)
+    form_class = CommentForm
+    success_url = reverse_lazy('home')
+    def form_valid(self,form):
+        form.instance.post_id = self.kwargs['pk']
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+
+   
 
 
 # def addComment(request,post_id):
