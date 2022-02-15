@@ -1,5 +1,5 @@
 from multiprocessing import context
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 #User Form Imports used in auth
@@ -14,6 +14,16 @@ from django.views.generic import ListView,DetailView
 from .models import Post , User ,Comment,Category
 #
 from django.views.generic.edit  import CreateView
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+
+#likePost View
+def LikeView(request, post_id):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('postDetails', args=[str(post_id)]))
+
 
 #auth Views here.
 def loginPg(request):
@@ -61,7 +71,7 @@ def signupPg(request):
 # Create your views here.
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 # render home page with current logged user
 def home(request):
     userDetails(request)
@@ -121,16 +131,20 @@ def deletePost(request,post_id):
 @login_required(login_url='login')
 def addPost(request):
     if(request.method == 'POST'):
-        form=PostForm(request.POST or None, request.FILES or None)
+        form=PostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            post=form.save(commit=False)
+            post.user = request.user
+            print('2222')
+            post.save()
+            print('333333')
             return redirect('post')
         else:
             return redirect('home')
 
     else:
         form=PostForm()
-        context={'form' : form}
+        context={'form' : form,}
         return render(request, 'blogApp/addPost.html',context)
 
 
