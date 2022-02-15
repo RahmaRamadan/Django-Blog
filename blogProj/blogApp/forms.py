@@ -20,11 +20,12 @@ class UserForm(UserCreationForm):
 class UsersForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password','checkpassword')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
-            'password': forms.TextInput(attrs={'class': 'form-control'})
+            'password': forms.TextInput(attrs={'class': 'form-control'}),
+            'checkpassword': forms.TextInput(attrs={'class': 'form-control'})
         }
 
 
@@ -35,9 +36,7 @@ class CategoryForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'follower': forms.Select(attrs={'class': 'form-control'}),
-
         }
-        # fields = ('__all__')
 
 
 class PostForm(forms.ModelForm):
