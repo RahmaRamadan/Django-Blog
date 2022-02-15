@@ -2,7 +2,7 @@ from dataclasses import fields
 from re import L
 from django import forms
 
-from .models import Post ,Comment
+from .models import Post, Comment
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -10,23 +10,23 @@ from django.contrib.auth.models import User
 from . import models
 
 
-class UserForm(UserCreationForm):
+class UsersForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name',
                   'last_name', 'password1', 'password2')
 
 
-class UsersForm(forms.ModelForm):
-    class Meta:
-        model = models.User
-        fields = ('username', 'email', 'password','checkpassword')
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
-            'password': forms.TextInput(attrs={'class': 'form-control'}),
-            'checkpassword': forms.TextInput(attrs={'class': 'form-control'})
-        }
+# class UsersForm(forms.ModelForm):
+#     class Meta:
+#         model = models.User
+#         fields = ('username', 'email', 'password','checkpassword')
+#         widgets = {
+#             'username': forms.TextInput(attrs={'class': 'form-control'}),
+#             'email': forms.TextInput(attrs={'class': 'form-control'}),
+#             'password': forms.TextInput(attrs={'class': 'form-control'}),
+#             'checkpassword': forms.TextInput(attrs={'class': 'form-control'})
+#         }
 
 
 class CategoryForm(forms.ModelForm):
@@ -43,7 +43,8 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         # fields = ('__all__')
-        fields = ('title','content','category','user','tags','postpicture')
+        fields = ('title', 'content', 'category',
+                  'user', 'tags', 'postpicture')
         # widgets = {
         #     'title': forms.TextInput(attrs={'class': 'form-control'}),
         #     'content': forms.TextInput(attrs={'class': 'form-control'}),
@@ -58,7 +59,3 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('body',)
-
-        
-
-

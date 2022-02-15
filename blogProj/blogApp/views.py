@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.models import User
 # models
 from .models import Post, User, Comment, Category
 #
@@ -66,7 +67,6 @@ def signupPg(request):
 @login_required(login_url='login')
 # render home page with current logged user
 def home(request):
-    userDetails(request)
     current_user = request.user
     # name = current_user.username
     context = {'usr': current_user}
@@ -79,37 +79,72 @@ def redirectNews(request):
     catgory_name = "news"
     found = False
     all_categories = Category.objects.all()
+
     for cat in all_categories:
         if cat.name == catgory_name:
-            for follwer in cat.followers:
-                if cat.followers.username == log_user:
+            all_followers = cat.followers.all()
+            for follower in all_followers:
+                print(
+                    "----------------------------------------user: ", follower)
+                if follower.username == log_user:
                     found = True
                     return render(request, 'blogApp/subscribeOutput.html')
                 else:
-                    found = True
-                    return render(request, 'blogApp/notsubscribeOutput.html')
+                    found = False
+
     if found == False:
-        return "False"
+        return render(request, 'blogApp/notsubscribeOutput.html')
 
 
+    
 @login_required(login_url='login')
 def redirectSports(request):
+    log_user = request.user.username
     catgory_name = "sports"
-    return render(request, 'blogApp/sports.html')
+    found = False
+    all_categories = Category.objects.all()
+
+    for cat in all_categories:
+        if cat.name == catgory_name:
+            all_followers = cat.followers.all()
+            for follower in all_followers:
+                print(
+                    "----------------------------------------user: ", follower)
+                if follower.username == log_user:
+                    found = True
+                    return render(request, 'blogApp/subscribeOutput.html')
+                else:
+                    found = False
+
+    if found == False:
+        return render(request, 'blogApp/notsubscribeOutput.html')
+    # return render(request, 'blogApp/sports.html')
 
 
 @login_required(login_url='login')
 def redirectPolitics(request):
+    log_user = request.user.username
     catgory_name = "politics"
-    return render(request, 'blogApp/politics.html')
+    found = False
+    all_categories = Category.objects.all()
+
+    for cat in all_categories:
+        if cat.name == catgory_name:
+            all_followers = cat.followers.all()
+            for follower in all_followers:
+                print(
+                    "----------------------------------------user: ", follower)
+                if follower.username == log_user:
+                    found = True
+                    return render(request, 'blogApp/subscribeOutput.html')
+                else:
+                    found = False
+
+    if found == False:
+        return render(request, 'blogApp/notsubscribeOutput.html')
+    # return render(request, 'blogApp/politics.html')
 
 
-@login_required(login_url='login')
-def userDetails(request):
-    log_user = request.user.id
-    all_users = User.objects.all()
-
-    return True
 
 
 def post(request):
