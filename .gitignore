@@ -4,3 +4,4 @@ env
 **/migrations
 **/migrations/__init__.py
 **/blogProj/__pycache__
+__pycache__
