@@ -4,7 +4,12 @@
     <h1 class="text-light">HEADER</h1>
     </div>
     <div class="col-6">
+        {% if user.is_authenticated %}
         <span><a class="btn btn-outline-light" href="{% url 'signout' %}">logout</a></span>
+        {% else %}
+        <span><a class="btn btn-outline-light" href="{% url 'signup' %}">Register</a></span>
+        <span><a class="btn btn-outline-light" href="{% url 'login' %}">Login</a></span>
+        {% endif %}
     </div>
 </div>
 </div>

@@ -29,13 +29,23 @@ class PostAdmin(admin.ModelAdmin):
         ["post info", {'fields': ["title", "postpicture",
                                   "content", "category", "tags", "user"]}],
     )
-    # list_display=("title","postpicture","content","category","tags","user","date")
-    search_fields = ["user"]
+    def get_tags(self,obj):
+        return "\n".join([p.name for p in obj.tags.all()])
+
+    list_display=("title","postpicture","content","category","get_tags","user")
+    search_fields=["user"]
+
+# class CommentAdmin(admin.ModelAdmin):
+#     fieldsets = (
+#         ["comment info", {'fields':["body","post","user","date_added"]}]
+#   # list_display=("title","postpicture","content","category","tags","user","date")
+#     search_fields = ["user"]
 
 
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
         ["comment info", {'fields': ["body", "post", "user"]}],
+
     )
     list_display = ("body", "post", "user")
     search_fields = ["post", "user"]

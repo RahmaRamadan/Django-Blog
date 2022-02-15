@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body class="bg-dark">
+    {% extends 'blogApp/base.html' %} {% block content %}
     <form method="POST" class="text-light text-center"> {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-success" type="submit">edit</button>
+        <button class="btn btn-success" type="submit">Update</button>
         <button class="btn btn-danger" type="reset">Reset</button> <br>
-        <a class="btn btn-outline-light mt-2" href="{% url 'post' %}">Back Post</a>
+        <a class="btn btn-outline-light mt-2" href="{% url 'post' %}">All Posts</a>
     </form>
+    {% endblock %}
 </body>
 </html>
