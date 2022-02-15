@@ -13,29 +13,30 @@
   <ul class="text-dark">
     {% for post in all_posts %}
     <h5>ID: {{post.id}} </h5>
+    <h5>PK: {{post.pk}} </h5>
     <h5>TITLE: {{post.title}}</h5>
-    <h5>CONTENT: {{post.content}}</h5>
+    <img
+            src="{{ MEDIA_URL }}{{ post.postpicture }}"
+            width="300px"
+            height="300px"
+          />
+    <!-- <h5>CONTENT: {{post.content}}</h5> -->
     <!-- <h5>PICTURE: <img src='{{ MEDIA_URL }}{{ post.postpicture }}' width="300px" height="300px"></h5> -->
     <h5>USER: {{ post.user }}</h5>
     <h5>DATE: {{ post.post_date }}</h5>
-    <div class="row container-fluid">
-      <div class="col-1">
-          <a class="btn btn-outline-light" href="{% url 'postDetails' post.id %}">
-            Details</a>
-      </div>
-      <div class="col-1">
-          <a class="btn btn-dark" href="{% url 'editPost' post.id %}">
-            Update</a>
-      </div>
-      <div class="col-1">
-          <a class="btn btn-outline-light" href="{% url 'deletePost' post.id %}">
-            Delete</a>
-      </div>
-      <div class="col-2">
-        <a class="btn btn-dark" href="{% url 'addComment' post.id %}">
+    <div class="container-fluid">
+      <div class="row gy-3">
+        <a class="btn btn-outline-light col-2 p-2" href="{% url 'postDetails' post.id %}">
+          Details</a>
+        <a class="btn btn-dark col-2 mx-2 p-2" href="{% url 'editPost' post.id %}">
+          Update</a>
+        <a class="btn btn-outline-light col-2 mx-2 p-2" href="{% url 'deletePost' post.id %}">
+          Delete</a>
+        <a class="btn btn-dark col-2 p-2" href="{% url 'addComment' post.id %}">
           Add Comment
         </a>
       </div>
+
     </div>
     <hr />
     {% endfor %}
@@ -43,4 +44,5 @@
   <a class="btn btn-outline-success" href="{% url 'addPost' %}"> New POST</a>
   {% endblock %}
 </body>
+
 </html>

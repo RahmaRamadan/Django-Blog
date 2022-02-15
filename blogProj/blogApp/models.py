@@ -1,11 +1,8 @@
-from tkinter import CASCADE
-from django import forms
 from django.db import models
 from datetime import datetime, date
 from django.contrib.auth.models import User
 
 # Create your models here.
-
 
 # class User(models.Model):
 #     class Meta:
@@ -17,11 +14,7 @@ from django.contrib.auth.models import User
 
 #     def __str__(self):
 #         return self.username
-
-
 class Category(models.Model):
-    class Meta:
-        ordering = ['pk']
     name = models.CharField(max_length=50)
     followers = models.ManyToManyField(User, through='UsersCategories')
 
@@ -37,9 +30,8 @@ class UsersCategories(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
+
 class Tag(models.Model):
-    class Meta:
-        ordering = ['pk']
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -47,8 +39,6 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    class Meta:
-        ordering = ['pk']
     title = models.CharField(max_length=50)
     postpicture = models.FileField(
         upload_to='images/', null=True, verbose_name="")
@@ -57,7 +47,7 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post_date = models.DateField(auto_now_add=True)
-
+    likes = models.ManyToManyField(User, related_name='blog_posts')
     def __str__(self):
         return self.title + ' | ' + str(self.user)
 
@@ -75,3 +65,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.post.title
+
+    # date_added = models.DateTimeField(auto_now_add=False)
+    # class Meta: 
+    #     ordering = ('date_added',) 
+
+    def __str__(self):
+        return self.post.title 
+
