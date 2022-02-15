@@ -2,21 +2,20 @@ from tkinter import CASCADE
 from django import forms
 from django.db import models
 from datetime import datetime, date
+from django.contrib.auth.models import User
 # Create your models here.
 
 
-class User(models.Model):
-    class Meta:
-        ordering = ['pk']
-    username = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-    checkpassword = models.CharField(max_length=100)
+# class User(models.Model):
+#     class Meta:
+#         ordering = ['pk']
+#     username = models.CharField(max_length=100)
+#     email = models.CharField(max_length=100)
+#     password = models.CharField(max_length=100)
+#     checkpassword = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.username
-
-
+#     def __str__(self):
+#         return self.username
 class Category(models.Model):
     class Meta:
         ordering = ['pk']
@@ -32,6 +31,7 @@ class Category(models.Model):
 class UsersCategories(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
 
 
 class Tag(models.Model):
@@ -51,6 +51,7 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post_date = models.DateField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='blog_posts')
     def __str__(self):
         return self.title + ' | ' + str(self.user)
 
@@ -68,7 +69,3 @@ class Comment(models.Model):
        
     def __str__(self):
         return self.post.title 
-
-
-
-
