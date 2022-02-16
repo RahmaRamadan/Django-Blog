@@ -10,10 +10,15 @@
     />
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+
     <style type="text/css">
       body,
       html {
@@ -23,7 +28,7 @@
       }
       .sidenav {
         height: 100%;
-        width: 250px;
+        width: 260px;
         position: fixed;
         z-index: 1;
         top: 0;
@@ -33,43 +38,76 @@
         padding-top: 20px;
       }
 
-      .sidenav a {
-        padding: 6px 8px 6px 16px;
+      .sidenav .a-nav {
+        padding: 30px 8px 6px 16px;
         text-decoration: none;
-        font-size: 25px;
+        font-size: 30px;
         color: #818181;
         display: block;
       }
 
       .sidenav a:hover {
         color: #f1f1f1;
+        text-decoration: none;
       }
 
       .main {
-        margin-left: 250px;
+        margin-left: 260px;
         padding: 0px 10px;
+      }
+      .color_i {
+        padding: 40px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 28px;
+        color: #00b894;
+        display: block;
+      }
+      .color_minus{
+        padding: 40px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 28px;
+        color:#d63031;
+        display: block;
       }
     </style>
   </head>
   <body class="bg-light">
     {% include 'blogApp/header.html' %}
+    {% include 'message.html' %}
     <div class="sidenav">
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'redirect_news' %}">News</a>
-      <a href="{% url 'redirect_sports' %}">Sports</a>
-      <a href="{% url 'redirect_politics' %}">Politics</a>
+      <div class="row">
+        <div class="col-2"></div>
+        <a href="{% url 'home' %}" class="col-5 a-nav">Home </a>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <a href="#" class="col-5 a-nav">News </a
+        ><a href="{% url 'news_add' %}" class="fa fa-plus color_i col-2"></a>
+        <a href="{% url 'news_delete' %}" class="fa fa-minus color_minus col-2"></a>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <a href="#" class="col-5 a-nav">Sports </a
+        ><a href="{% url 'sports_add' %}" class="fa fa-plus color_i col-2"></a>
+        <a href="{% url 'sports_delete' %}" class="fa fa-minus color_minus col-2"></a>
+      </div>
+      <div class="row">
+        <div class="col-2"></div>
+        <a href="#" class="col-5 a-nav">Politics </a
+        ><a href="{% url 'politics_add' %}" class="fa fa-plus color_i col-2"></a>
+        <a href="{% url 'politics_delete' %}" class="fa fa-minus color_minus col-2"></a>
+      </div>
     </div>
 
     <div id="content" name="content" class="main">
       <div class="row container-fluid">
         <div class="col-12">
           <hr class="mt-0 mb-4" />
-          {% block content %} 
-          {% endblock %}
-         
+          {% block content %} {% endblock %}
         </div>
       </div>
     </div>
     {% include 'blogApp/footer.html' %}
+    
   </body>
 </html>

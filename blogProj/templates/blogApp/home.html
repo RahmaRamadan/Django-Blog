@@ -5,21 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
 </head>
-<body class="bg-dark">
+<body style="background-color: #ecf0f1 !important ;">
     {% extends 'blogApp/base.html' %}
     {% block content %}
-    {% if user.is_authenticated %}
-        {% if request.user.is_staff %}
-            <h1 class="text-primary">You are StaffUser Do what you want, {{ usr.username }}</h1>
-            <a href="{% url 'admin-portal' %}"> go to admin-portal</a>
-            {% else %}
-            <h1 class="text-success">Hello, {{ usr.username }}</h1>
-        {% endif %}
-    {% else %}
-            <h1 class="text-danger">You are not logged in </h1>
-    {% endif %}
-{% endblock %}
+        <h1>HOME PAGE</h1>
+    {% endblock %}
 </body>
 </html>
