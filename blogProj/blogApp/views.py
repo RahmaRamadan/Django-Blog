@@ -70,6 +70,7 @@ def signupPg(request):
         return render(request, 'blogApp/signup.html', context)
 
 # Create your views here.
+@login_required(login_url='login')
 def admin_portal(request):
     userDetails(request)
     current_user = request.user
