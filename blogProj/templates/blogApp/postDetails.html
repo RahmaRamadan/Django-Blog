@@ -38,7 +38,12 @@
                {% else %}
                 {% for comment in post.comments.all %}
           <!-- <strong> {{ comment.date_added }}</strong> -->
-          {{ comment.body }} {% endfor %} {% endif %}
+          <br />
+          {{ comment.user.username }} : {{ comment.body }} 
+          <br/>
+          {{ comment.date_added }} 
+          {% endfor %} {% endif %}
+
         </div>
       </div>
 
@@ -70,6 +75,7 @@
               >
           {% endif %}
         {% endif %}
+
         {% if request.user.is_staff %}
           <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">Delete</a>
         {% endif %}
