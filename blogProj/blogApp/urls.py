@@ -24,7 +24,18 @@ urlpatterns = [
     path('signout',views.signoutPg , name='signout'),
 
     # category usrls
-    path('sports/', views.redirectSports, name='redirect_sports'),
-    path('news/', views.redirectNews, name='redirect_news'),
-    path('politics/', views.redirectPolitics, name='redirect_politics'),
+    # path('sports/', views.redirectSports, name='redirect_sports'),
+    # path('news/', views.redirectNews, name='redirect_news'),
+    # path('politics/', views.redirectPolitics, name='redirect_politics'),
+    # add follower
+    path('newsadd/', views.redirectNewsAdd, name='news_add'),
+    path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
+    path('politicsadd/', views.redirectPoliticsAdd, name='politics_add'),
+    # remove follower
+    path('newsdel/', views.redirectNewsDelete, name='news_delete'),
+    path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
+    path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
+
+
+
 ]

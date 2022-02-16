@@ -12,6 +12,7 @@
     {% block content %}
     {% if user.is_authenticated %}
         {% if request.user.is_staff %}
+            {% if message.tags %} class="{{message.tags}}"{% endif %}
             <h1 class="text-primary">You are StaffUser Do what you want, {{ usr.username }}</h1>
         {% else %}
             <h1 class="text-success">Hello, {{ usr.username }}</h1>
