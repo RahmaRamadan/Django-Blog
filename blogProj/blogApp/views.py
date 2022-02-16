@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import UsersForm, PostForm, CommentForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -169,6 +169,22 @@ def addPost(request):
         context={'form' : form,}
         return render(request, 'blogApp/addPost.html',context)
 
+@login_required(login_url='login')
+def addCategory(request):
+    if(request.method == 'POST'):
+        form = CategoryFormAdmin(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            Category=form.save(commit=False)
+            Category.user = request.user
+            Category.save()
+            return redirect('admin-portal')
+        else:
+            return redirect('admin-portal')
+
+    else:
+        form=CategoryFormAdmin()
+        context={'form' : form,}
+        return render(request, 'blogApp/addCategory.html',context)
 
 @login_required(login_url='login')
 def editPost(request, post_id):
