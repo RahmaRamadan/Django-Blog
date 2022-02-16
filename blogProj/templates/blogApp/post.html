@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>post</title>
+  </head>
+
+  <body style="background-color: #ecf0f1 !important">
+    {% extends 'blogApp/base.html' %} {% load static %} {% block content %}
+    <h1 class="text-dark">Posts</h1>
+    <!-- POST CONTENT -->
+    <ul class="text-dark">
+      {% for post in all_posts %}
+      <!-- POST TITLE -->
+      <h5>{{post.title}}</h5>
+      <!-- POST IMAGE -->
+      <img src="{{ MEDIA_URL }}{{ post.postpicture }}" width="35%" />
+      <h5>CREATE USER: {{ post.user }}</h5>
+      <!-- POST DATE -->
+      <h5>DATE: {{ post.post_date }}</h5>
+      <div class="container-fluid">
+      
+        
+        <div class="row">
+        <!-- COMMENT BTN -->
+        <div class="col-2 text-right">
+          {% if user.is_authenticated %}
+            <a
+              class="text-primary text-decoration-none col-2 p-2"
+              href="{% url 'addComment' post.id %}"
+            >
+              Add Comment</a 
+            >
+          {% else %}
+              <a
+                  class="text-primary text-decoration-none col-2 p-2"
+                  href="{% url 'login' %}"
+                >
+                  Add Comment</a 
+                >
+          {% endif %}
+        </div>
+        <!-- DETAILS BTN -->
+        <div class="col-1">
+          {% if user.is_authenticated %}
+              <a
+                class="text-primary text-decoration-none col-2 p-2"
+                href="{% url 'postDetails' post.id %}"
+              >
+                Details</a
+              >
+            {% elif request.user.is_staff %}
+                <a
+                class="text-primary text-decoration-none col-2 p-2"
+                href="{% url 'postDetails' post.id %}"
+              >
+                Details</a
+              >
+          {% else %}
+          <a
+                class="text-primary text-decoration-none col-2 p-2"
+                href="{% url 'postDetails' post.id %}"
+              >
+                Details</a
+              >
+          {% endif %}
+        </div>
+        <!-- UPDATE BTN -->
+        <div class="col-1">
+        {% if user.is_authenticated %}
+          {% if user.id == post.user.id %}
+            <a
+              class="text-primary text-decoration-none col-2 mx-2 p-2"
+              href="{% url 'editPost' post.id %}"
+            >
+              Update</a
+            >
+          {% elif request.user.is_staff %}
+            <a
+                class="text-primary text-decoration-none col-2 mx-2 p-2"
+                href="{% url 'editPost' post.id %}"
+              >
+                Update</a
+              >
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="col-1">
+        <!-- DELETE BTN -->
+        {% if user.is_authenticated %}
+          {% if user.id == post.user.id %}
+          <a
+            class="text-danger text-decoration-none col-2 mx-2 p-2"
+            href="{% url 'deletePost' post.id %}"
+          >
+            Delete</a
+          >
+          {% elif request.user.is_staff %}
+          <a
+            class="text-danger text-decoration-none col-2 mx-2 p-2"
+            href="{% url 'deletePost' post.id %}"
+          >
+            Delete</a
+          >
+          {% endif %}
+        {% endif %}
+        </div>
+      </div>
+      <hr />
+      {% endfor %}
+    </ul>
+    <!-- END POST CONTENT -->
+    <!-- NEW POST BTN -->
+    <a class="btn btn-dark" href="{% url 'addPost' %}">+Add Post</a>
+    {% endblock %}
+  </body>
+</html>
+
+<!-- <h5>ID: {{post.id}} </h5> -->
+<!-- <h5>PK: {{post.pk}} </h5> -->
+<!-- <h5>CONTENT: {{post.content}}</h5> -->
