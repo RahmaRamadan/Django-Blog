@@ -23,6 +23,7 @@ urlpatterns = [
     path('signout', views.signoutPg, name='signout'),
 
     # category usrls
+    path('addCategory', views.addCategory, name='addCategory'),
     path('sports/', views.redirectSports, name='redirect_sports'),
     path('news/', views.redirectNews, name='redirect_news'),
     path('politics/', views.redirectPolitics, name='redirect_politics'),
