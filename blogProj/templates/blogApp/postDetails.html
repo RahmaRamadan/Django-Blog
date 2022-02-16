@@ -59,12 +59,11 @@
       <form action="{% url 'like_post' post.pk %}" method="POST">
         {% csrf_token %}
 
-        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">LIKE</button>
+        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">LIKE</button><span class="text-light"> {{ post.likes.count }} likes</span> 
       </form>
       <a class="btn btn-dark col-2 p-2" href="{% url 'addComment' post.id %}">
         Add Comment
       </a>
-      
     {%endblock%}
   </body>
 </html>
