@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import UsersForm, PostForm, CommentForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -17,9 +17,9 @@ from .models import Post, User, Comment, Category
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.models import Group, User
 
-
-# likePost View
+#likePost View
 def LikeView(request, post_id):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     liked = False
@@ -42,12 +42,15 @@ def loginPg(request):
             passwd = request.POST.get('password')
             user = authenticate(username=name, password=passwd)
             if user is not None:
-                login(request, user)
-                if request.GET.get('next') is not None:
-                    return redirect(request.GET.get('next'))
+                if user.groups.filter(name='blocked'):
+                    messages.info(request, 'this User is blocked')
+                    return render(request, 'blogApp/login.html')
                 else:
-                    return redirect('home')
-
+                    login(request, user)
+                    if request.GET.get('next') is not None:
+                        return redirect(request.GET.get('next'))
+                    else:
+                        return redirect('home')
             else:
                 messages.info(request, 'User name or password is incorrect')
         return render(request, 'blogApp/login.html')
@@ -77,7 +80,21 @@ def signupPg(request):
         context = {'signup_form': signup_form}
         return render(request, 'blogApp/signup.html', context)
 
+
+# Create your views here.
+@login_required(login_url='login')
+def admin_portal(request):
+    userDetails(request)
+    current_user = request.user
+    print(current_user)
+    context = {'usr': current_user}
+    if(request.user.is_staff):
+        return render(request, 'blogApp/admin-portal.html', context)
+    else:
+        return render(request, 'blogApp/AUTHORIZATION.html', context)
+
 # --------------------------------------------------------------------------------------------- 
+
 # render home page with current logged user
 # Create your views here.
 @login_required(login_url='login')
@@ -181,10 +198,30 @@ def post(request):
     context = {'all_posts': all_posts}
     return render(request, 'blogApp/post.html', context)
 
+@login_required(login_url='login')
+def users(request):
+    users = User.objects.all().order_by('-id')
+    print(users)
+    context = {'USERS': users}
+    return render(request, 'blogApp/users.html', context)
+
+@login_required(login_url='login')
+def blockUser(request, user_id):
+    group = Group.objects.get(name='blocked')
+    user = User.objects.get(id = user_id) 
+    group.user_set.add(user)
+    return users(request)
+
+def unblockUser(request, user_id):
+    group = Group.objects.get(name='blocked')
+    user = User.objects.get(id = user_id) 
+    group.user_set.remove(user)
+    return users(request)
+
+
 
 def postDetails(request, post_id):
     post = Post.objects.get(id=post_id)
-
     context = {'post': post}
     return render(request, 'blogApp/postDetails.html', context)
 
@@ -215,8 +252,39 @@ def addPost(request):
         context = {'form': form, }
         return render(request, 'blogApp/addPost.html', context)
 
+
+@login_required(login_url='login')
+def addCategory(request):
+    if(request.method == 'POST'):
+        form = CategoryFormAdmin(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            Category=form.save(commit=False)
+            Category.user = request.user
+            Category.save()
+            return redirect('admin-portal')
+        else:
+            return redirect('admin-portal')
+
+    else:
+        form=CategoryFormAdmin()
+        context={'form' : form,}
+        return render(request, 'blogApp/addCategory.html',context)
+
+@login_required(login_url='login')
+def categories(request):
+    categories = Category.objects.all().order_by('-id')
+    context = {'CATEGORIES': categories}
+    return render(request, 'blogApp/categories.html', context)
+
 # --------------------------------------------------------------------------------------------- 
 
+
+@login_required(login_url='login')
+def deleteCategory(request, Category_id):
+    CategoryVar = Category.objects.get(id=Category_id)
+    CategoryVar.delete()
+    return redirect('admin-portal')
+    
 @login_required(login_url='login')
 def editPost(request, post_id):
     post = Post.objects.get(id=post_id)
