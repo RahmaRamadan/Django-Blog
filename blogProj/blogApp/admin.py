@@ -1,6 +1,7 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User, Category, UsersCategories, Post, Comment, Tag
+from .models import User,Category,Post,Comment,Tag, UsersCategories
+
 
 
 class UserCategoryInline(admin.TabularInline):
@@ -15,7 +16,6 @@ class UserCategoryInline(admin.TabularInline):
 #     search_fields = ["username"]
 #     inlines = (UserCategoryInline,)
 
-
 class CategoryAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'name', 'show_followers')
@@ -23,6 +23,12 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     inlines = (UserCategoryInline,)
 
+# class PostAdmin(admin.ModelAdmin):
+#     fieldsets = (
+#         ["post info", {'fields':["title","postpicture","content","category","tags","user"]}],
+#     )
+#     def get_tags(self,obj):
+#         return "\n".join([p.name for p in obj.tags.all()])
 
 # class PostAdmin(admin.ModelAdmin):
 #     fieldsets = (
@@ -35,26 +41,21 @@ class CategoryAdmin(admin.ModelAdmin):
 #     list_display=("title","postpicture","content","category","get_tags","user")
 #     search_fields=["user"]
 
-# class CommentAdmin(admin.ModelAdmin):
-#     fieldsets = (
-#         ["comment info", {'fields':["body","post","user","date_added"]}]
-#   # list_display=("title","postpicture","content","category","tags","user","date")
-#     search_fields = ["user"]
-
-
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
-        ["comment info", {'fields': ["body", "post", "user"]}],
-
+        ["comment info", {'fields':["body","post","user"]}],
     )
-    list_display = ("body", "post", "user")
-    search_fields = ["post", "user"]
+    list_display=("body","post","user")
+    search_fields=["post","user"]
 
 
 class TagAdmin(admin.ModelAdmin):
     fieldsets = (
-        ["tag info", {'fields': ["name"]}],
+        ["tag info", {'fields':["name"]}],
     )
+   
+
+
 
 
 # admin.site.register(User, UserAdmin)

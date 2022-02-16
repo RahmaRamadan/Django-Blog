@@ -12,7 +12,8 @@ urlpatterns = [
     path('deletePost/<post_id>',views.deletePost, name='deletePost'),
     path('editPost/<post_id>',views.editPost , name='editPost'),
     # path('addComment/<post_id>',views.addComment , name='addComment'),
-    path('addComment/<post_id>',views.AddCommentView.as_view(), name='addComment'),
+    path('addComment/<int:pk>/',AddCommentView.as_view(), name='addComment'),
+
     #likePost URl
     path('like/<post_id>', LikeView , name='like_post'),
     #auth urls
