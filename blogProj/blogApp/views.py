@@ -84,7 +84,7 @@ def signupPg(request):
 # Create your views here.
 @login_required(login_url='login')
 def admin_portal(request):
-    userDetails(request)
+    # userDetails(request)
     current_user = request.user
     print(current_user)
     context = {'usr': current_user}
