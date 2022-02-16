@@ -31,7 +31,7 @@ urlpatterns = [
     # users usrls
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
-
+    path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
     path('sports/', views.redirectSports, name='redirect_sports'),
     path('news/', views.redirectNews, name='redirect_news'),
     path('politics/', views.redirectPolitics, name='redirect_politics'),
