@@ -28,6 +28,10 @@ urlpatterns = [
     path('deleteCategory/<Category_id>', views.deleteCategory, name='deleteCategory'),
     path('editCategory/<Category_id>', views.editPost, name='editPost'),
 
+    # users usrls
+    path('users', views.users, name='users'),
+    path('blockUser/<user_id>', views.blockUser, name='blockUser'),
+
     path('sports/', views.redirectSports, name='redirect_sports'),
     path('news/', views.redirectNews, name='redirect_news'),
     path('politics/', views.redirectPolitics, name='redirect_politics'),

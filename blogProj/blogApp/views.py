@@ -18,7 +18,7 @@ from django.views.generic.edit  import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
 
-
+from django.contrib.auth.models import Group, User
 #likePost View
 def LikeView(request, post_id):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -137,10 +137,30 @@ def post(request):
     context = {'all_posts': all_posts}
     return render(request, 'blogApp/post.html', context)
 
+@login_required(login_url='login')
+def users(request):
+    users = User.objects.all().order_by('-id')
+    print(users)
+    context = {'USERS': users}
+    return render(request, 'blogApp/users.html', context)
+
+@login_required(login_url='login')
+def blockUser(request, user_id):
+    group = Group.objects.get(name='blocked')
+    user = User.objects.get(id = user_id) 
+    group.user_set.add(user)
+    return users(request)
+
+def unblockUser(request, user_id):
+    group = Group.objects.get(name='blocked')
+    user = User.objects.get(id = user_id) 
+    group.user_set.remove(user)
+    return users(request)
+
+
 
 def postDetails(request, post_id):
     post = Post.objects.get(id=post_id)
-
     context = {'post': post}
     return render(request, 'blogApp/postDetails.html', context)
 
