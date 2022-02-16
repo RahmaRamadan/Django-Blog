@@ -22,7 +22,13 @@ from django.urls import reverse, reverse_lazy
 # likePost View
 def LikeView(request, post_id):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    post.likes.add(request.user)
+    liked = False
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
     return HttpResponseRedirect(reverse('postDetails', args=[str(post_id)]))
 
 # --------------------------------------------------------------------------------------------- 
