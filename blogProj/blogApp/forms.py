@@ -37,8 +37,11 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'follower': forms.Select(attrs={'class': 'form-control'}),
         }
-
-
+class CategoryFormAdmin(forms.ModelForm):
+    class Meta:
+            model = models.Category
+            fields = ["name"]
+            
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
