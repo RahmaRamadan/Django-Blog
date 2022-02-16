@@ -36,12 +36,14 @@ def loginPg(request):
             passwd = request.POST.get('password')
             user = authenticate(username=name, password=passwd)
             if user is not None:
-                login(request, user)
+                if User.groups.get(name='blocked'):
+                    messages.info(request, 'this User is blocked')
+                else:
+                    login(request, user)
                 if request.GET.get('next') is not None:
                     return redirect(request.GET.get('next'))
                 else:
                     return redirect('home')
-
             else:
                 messages.info(request, 'User name or password is incorrect')
         return render(request, 'blogApp/login.html')

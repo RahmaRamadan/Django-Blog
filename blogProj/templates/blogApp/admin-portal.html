@@ -16,12 +16,15 @@
     <h2>new and list all</h2>
 
 
-    <a href="{% url 'addPost' %}"> New POST</a>
+    <a class="btn btn-primary" href="{% url 'addPost' %}"> New POST</a>
 
-    <a href="{% url 'post' %}"> see all POSTs</a>
+    <a class="btn btn-primary" href="{% url 'post' %}"> see all POSTs</a>
 
-    <a href="{% url 'addCategory' %}"> New CATEGORY</a>
+    <a class="btn btn-primary" href="{% url 'addCategory' %}"> New CATEGORY</a>
 
-    <a href="{% url 'categories' %}"> see all categories</a>
+    <a class="btn btn-primary" href="{% url 'categories' %}"> see all categories</a>
+
+    <a class="btn btn-primary" href="{% url 'users' %}"> see all Users</a>
+
     {% endblock %}
 </body>

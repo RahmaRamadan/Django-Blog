@@ -13,7 +13,8 @@
     {% if user.is_authenticated %}
         {% if request.user.is_staff %}
             <h1 class="text-primary">You are StaffUser Do what you want, {{ usr.username }}</h1>
-        {% else %}
+            <a href="{% url 'admin-portal' %}"> go to admin-portal</a>
+            {% else %}
             <h1 class="text-success">Hello, {{ usr.username }}</h1>
         {% endif %}
     {% else %}

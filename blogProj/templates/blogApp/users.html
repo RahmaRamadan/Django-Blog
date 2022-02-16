@@ -13,7 +13,7 @@
     <ul class="text-dark">
         {% for user in USERS %}
         <h5>Username : {{user.username}} </h5>
-        <h5>groups : 
+        <h5>
             {% for group in user.groups.all %}
                 {{ group }}
             {% endfor %} 
