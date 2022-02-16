@@ -1,13 +1,27 @@
-<h1>hello to the admin portal</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<p>what do you want</p>
-<h2>new and list all</h2>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>post</title>
+</head>
+
+<body class="bg-secondary">
+    {% extends 'blogApp/base.html' %} {% load static %} {% block content %}
+    <h1>hello to the admin portal</h1>
+
+    <p>what do you want</p>
+    <h2>new and list all</h2>
 
 
-<a href="{% url 'addPost' %}"> New POST</a>
+    <a href="{% url 'addPost' %}"> New POST</a>
 
-<a href="{% url 'post' %}"> see all POSTs</a>
+    <a href="{% url 'post' %}"> see all POSTs</a>
 
-<a href="{% url 'addCategory' %}"> New CATEGORY</a>
+    <a href="{% url 'addCategory' %}"> New CATEGORY</a>
 
-<a href="{% url 'categories' %}"> see all categories</a>
+    <a href="{% url 'categories' %}"> see all categories</a>
+    {% endblock %}
+</body>

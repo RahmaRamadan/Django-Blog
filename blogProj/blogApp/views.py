@@ -191,6 +191,12 @@ def categories(request):
     categories = Category.objects.all().order_by('-id')
     context = {'CATEGORIES': categories}
     return render(request, 'blogApp/categories.html', context)
+
+@login_required(login_url='login')
+def deleteCategory(request, Category_id):
+    CategoryVar = Category.objects.get(id=Category_id)
+    CategoryVar.delete()
+    return redirect('admin-portal')
     
 @login_required(login_url='login')
 def editPost(request, post_id):

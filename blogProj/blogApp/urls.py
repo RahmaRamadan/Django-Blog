@@ -25,6 +25,8 @@ urlpatterns = [
     # category usrls
     path('addCategory', views.addCategory, name='addCategory'),
     path('categories', views.categories, name='categories'),
+    path('deleteCategory/<Category_id>', views.deleteCategory, name='deleteCategory'),
+    path('editCategory/<Category_id>', views.editPost, name='editPost'),
 
     path('sports/', views.redirectSports, name='redirect_sports'),
     path('news/', views.redirectNews, name='redirect_news'),
