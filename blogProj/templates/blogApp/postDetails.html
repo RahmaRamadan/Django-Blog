@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body class="bg-dark">
+    {% extends 'blogApp/base.html' %} {% block content %}
+    <div class="text-light row mb-4">
+      <div class="col-4">
+        <h5>
+        <img
+            src="{{ MEDIA_URL }}{{ post.postpicture }}"
+            width="300px"
+            height="300px"
+          />
+        </h5>
+      </div>
+      <div>
+        <p>Currently user is  {{ user.username }}, id {{ user.id }} </p>
+        <h1>Post Created By : {{ post.user.username }}, {{ post.user.id }} </h1>
+        <h5>TITLE: {{ post.title }}</h5>
+        <h5>CONTENT: {{ post.content }}</h5>
+
+        <h5>CATEGORY: {{ post.category }}</h5>
+        <h5>
+          TAGS: {% for tag in post.tags.all %} {{ tag.name }} {% endfor %}
+        </h5>
+        <h5>AUTHOR: {{ post.user }}</h5>
+        <h5>POSTED ON: {{ post.post_date }}</h5>
+        <div>
+          <h5>COMMENTS</h5>
+          {% if not post.comments.all %}
+           No Comments Yet :( 
+               {% else %}
+                {% for comment in post.comments.all %}
+          <!-- <strong> {{ comment.date_added }}</strong> -->
+          <br />
+          {{ comment.body }} {% endfor %} {% endif %}
+        </div>
+      </div>
+
+      <br />
+      
+    </div>
+    <a class="btn btn-light" href="{% url 'post' %}">AllPosts</a>
+      {% if user.is_authenticated %}
+        {% if user.id == post.user.id %}
+          <a class="btn btn-light" href="{% url 'editPost' post.id %}"> Update</a>
+          <a class="btn btn-danger" href="{% url 'deletePost' post.id %}">
+            Delete</a
+          >
+        {% endif %}
+      {% endif %}
+      <hr>
+      <form action="{% url 'like_post' post.pk %}" method="POST">
+        {% csrf_token %}
+
+        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">LIKE</button>
+      </form>
+      <a class="btn btn-dark col-2 p-2" href="{% url 'addComment' post.id %}">
+        Add Comment
+      </a>
+      
+    {%endblock%}
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<div class="container">
+<div class="row">
+    <div class="col-6">
+    <h1 class="text-light">HEADER</h1>
+    </div>
+    <div class="col-6">
+        {% if user.is_authenticated %}
+        <span><a class="btn btn-outline-light" href="{% url 'signout' %}">logout</a></span>
+        {% else %}
+        <span><a class="btn btn-outline-light" href="{% url 'signup' %}">Register</a></span>
+        <span><a class="btn btn-outline-light" href="{% url 'login' %}">Login</a></span>
+        {% endif %}
+        {% if request.user.is_staff %}
+        <span><a class="btn btn-warning" href="/admin">Blog-Manage</a></span>
+        {% endif %}
+    </div>
+</div>
+</div>

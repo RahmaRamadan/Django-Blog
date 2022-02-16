@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body class="bg-dark">
+    {% extends 'blogApp/base.html' %}
+    {% block content %}
+    {% if user.is_authenticated %}
+        {% if request.user.is_staff %}
+            <h1 class="text-primary">You are StaffUser Do what you want, {{ usr.username }}</h1>
+        {% else %}
+            <h1 class="text-success">Hello, {{ usr.username }}</h1>
+        {% endif %}
+    {% else %}
+            <h1 class="text-danger">You are not logged in </h1>
+    {% endif %}
+{% endblock %}
+</body>
+</html>
