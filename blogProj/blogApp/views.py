@@ -76,7 +76,10 @@ def admin_portal(request):
     current_user = request.user
     print(current_user)
     context = {'usr': current_user}
-    return render(request, 'blogApp/admin-portal.html', context)
+    if(request.user.is_staff):
+        return render(request, 'blogApp/admin-portal.html', context)
+    else:
+        return render(request, 'blogApp/AUTHORIZATION.html', context)
 
 
 # @login_required(login_url='login')
