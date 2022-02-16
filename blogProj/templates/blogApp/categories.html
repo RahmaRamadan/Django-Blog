@@ -14,12 +14,6 @@
   <ul class="text-dark">
     {% for category in CATEGORIES %}
     <h5>name: {{category.name}} </h5>
-    <h5>followers: 
-        {%for follower in category.followers%} 
-            {{follower}}
-        {% endfor %} 
-    </h5>
-
     <a class="btn btn-danger" href="{% url 'deleteCategory' category.id %}"> delete</a>
 
     <hr/>
