@@ -30,16 +30,18 @@ class CategoryAdmin(admin.ModelAdmin):
 #     def get_tags(self,obj):
 #         return "\n".join([p.name for p in obj.tags.all()])
 
-# class PostAdmin(admin.ModelAdmin):
-#     fieldsets = (
-#         ["post info", {'fields': ["title", "postpicture",
-#                                   "content", "category", "tags", "user"]}],
-#     )
-#     def get_tags(self,obj):
-#         return "\n".join([p.name for p in obj.tags.all()])
+class PostAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ["post info", {'fields': ["title", "postpicture",
+                                  "content", "category", "tags", "user"]}],
+    )
+    def get_tags(self,obj):
+        return "\n".join([p.name for p in obj.tags.all()])
+    def get_likes(self,obj):
+        return "\n".join([p.username for p in obj.likes.all()])
 
-#     list_display=("title","postpicture","content","category","get_tags","user")
-#     search_fields=["user"]
+    list_display=("title","postpicture","content","category","get_tags","user","get_likes")
+    search_fields=["user"]
 
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -60,6 +62,6 @@ class TagAdmin(admin.ModelAdmin):
 
 # admin.site.register(User, UserAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Post)
+admin.site.register(Post,PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Tag, TagAdmin)

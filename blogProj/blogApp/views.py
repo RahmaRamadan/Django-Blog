@@ -17,8 +17,10 @@ from django.views.generic.edit  import CreateView
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
+#datetime
+from django.utils import timezone
 
-
+@login_required(login_url='login')
 #likePost View
 def LikeView(request, post_id):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -150,6 +152,7 @@ def addPost(request):
             post=form.save(commit=False)
             post.user = request.user
             post.save()
+            form.save_m2m()
             return redirect('post')
         else:
             return redirect('home')
@@ -182,11 +185,15 @@ class AddCommentView(CreateView):
     model = Comment
     template_name =  'blogApp/addComment.html'
     form_class = CommentForm
-    success_url = reverse_lazy('home')
     def form_valid(self,form):
         form.instance.post_id = self.kwargs['pk']
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        form.instance.date_added = timezone.now()
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+    # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
+
+
     
 
    

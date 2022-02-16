@@ -39,7 +39,10 @@
                 {% for comment in post.comments.all %}
           <!-- <strong> {{ comment.date_added }}</strong> -->
           <br />
-          {{ comment.body }} {% endfor %} {% endif %}
+          {{ comment.user.username }} : {{ comment.body }} 
+          <br/>
+          {{ comment.date_added }} 
+          {% endfor %} {% endif %}
         </div>
       </div>
 
@@ -54,6 +57,9 @@
             Delete</a
           >
         {% endif %}
+        <a class="btn btn-dark col-2 p-2" href="{% url 'addComment' post.id %}">
+          Add Comment
+        </a>
       {% endif %}
       <hr>
       <form action="{% url 'like_post' post.pk %}" method="POST">
@@ -61,9 +67,7 @@
 
         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">LIKE</button>
       </form>
-      <a class="btn btn-dark col-2 p-2" href="{% url 'addComment' post.id %}">
-        Add Comment
-      </a>
+     
       
     {%endblock%}
   </body>
