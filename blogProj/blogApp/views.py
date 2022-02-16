@@ -187,6 +187,12 @@ def addCategory(request):
         return render(request, 'blogApp/addCategory.html',context)
 
 @login_required(login_url='login')
+def categories(request):
+    categories = Category.objects.all().order_by('-id')
+    context = {'CATEGORIES': categories}
+    return render(request, 'blogApp/categories.html', context)
+    
+@login_required(login_url='login')
 def editPost(request, post_id):
     post = Post.objects.get(id=post_id)
     if (request.method == 'POST'):

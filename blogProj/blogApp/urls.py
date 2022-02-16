@@ -24,6 +24,8 @@ urlpatterns = [
 
     # category usrls
     path('addCategory', views.addCategory, name='addCategory'),
+    path('categories', views.categories, name='categories'),
+
     path('sports/', views.redirectSports, name='redirect_sports'),
     path('news/', views.redirectNews, name='redirect_news'),
     path('politics/', views.redirectPolitics, name='redirect_politics'),
