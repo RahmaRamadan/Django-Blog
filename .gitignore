@@ -5,4 +5,5 @@ env
 **/migrations/__init__.py
 **/migrations/__pycache__
 **/blogProj/__pycache__
+**/blogApp/__pycache__
 __pycache__
