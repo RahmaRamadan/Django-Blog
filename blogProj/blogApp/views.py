@@ -340,18 +340,10 @@ class AddCommentView(CreateView):
 
 
 # --------------------------------------------------------------------------------------------- 
-def newsposts(request):
-    news_posts = Post.objects.all().order_by('-id')
-    context = {'news_posts': news_posts}
-    return render(request, 'blogApp/news.html', context)
-
-
-def sportsposts(request):
-    sportsposts = Post.objects.all().order_by('-id')
-    context = {'sportsposts': sportsposts}
-    return render(request, 'blogApp/sports.html', context)
-
-def politicsposts(request):
-    politicsposts = Post.objects.all().order_by('-id')
-    context = {'politicsposts': politicsposts}
-    return render(request, 'blogApp/politics.html', context)
+def catPosts(request,cat):
+    # print(cat,"*************************************")
+    # oneCategory = Category.objects.filter(name=cat)
+    # print(oneCategory,"===============================================")
+    cat_posts = Post.objects.all().order_by('-id')
+    context = {'cat_posts': cat_posts,'cat': cat}
+    return render(request, 'blogApp/catPosts.html', context)

@@ -81,7 +81,7 @@
       {% for cat in categories %}
       <div class="row">
         <div class="col-2"></div>
-        <a href="#" name="cat_name" class="col-5 a-nav"> {{ cat }} </a
+        <a href="{% url 'catPosts' cat %}" name="cat_name" class="col-5 a-nav"> {{ cat }} </a
         ><a href="{% url 'add_category' cat %}" value={{cat}} class="fa fa-plus color_i text-warning col-2"></a>
         <a href="{% url 'remove_category' cat %}" value={{cat}} class="fa fa-minus color_minus text-danger col-2"></a>
      </div>

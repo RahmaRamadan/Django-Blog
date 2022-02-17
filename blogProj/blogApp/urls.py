@@ -48,8 +48,8 @@ urlpatterns = [
     
     path('categoryadd/<str:cat>/', views.redirectCategoryAdd, name='add_category'),
     path('categoryremove/<str:cat>/', views.redirectCategoryRemove, name='remove_category'),
+    path('catPosts/<str:cat>/', views.catPosts, name='catPosts'),
     
     
-
 ]
 
