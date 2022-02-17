@@ -36,11 +36,11 @@
         {% else %}
         {% for comment in post.comments.all %}
         <!-- <strong> {{ comment.date_added }}</strong> -->
-        
-       <h3> {{ comment.user.username }} : {{ comment.body }}</h3>
-       
-         commented at: {{ comment.date_added }}
-        
+
+        <h3> {{ comment.user.username }} : {{ comment.body }}</h3>
+
+        commented at: {{ comment.date_added }}
+
         {% if user.is_authenticated %}
         <a class="text-primary text-decoration-none col-2 p-2" href="{% url 'addReply' comment.id %}">
           Reply</a>
@@ -48,14 +48,14 @@
         <a class="text-primary text-decoration-none col-2 p-2" href="{% url 'login' %}">
           Reply</a>
         {% endif %}
-        
-        <br/>
-                   {% for reply in comment.replies.all %}
-                   <h4>{{ reply.user.username }} : {{ reply.body }}</h4>
-                   
-                      replied at :     {{ reply.date_added }}
 
-                   {% endfor %} 
+        <br />
+        {% for reply in comment.replies.all %}
+        <h4>{{ reply.user.username }} : {{ reply.body }}</h4>
+
+        replied at : {{ reply.date_added }}
+
+        {% endfor %}
         {% endfor %} {% endif %}
 
       </div>
@@ -69,54 +69,61 @@
       <!-- NEWS FEED BTN -->
       <a class="text-primary text-decoration-none" href="{% url 'post' %}">News Feed</a>
     </div>
-    <!-- UPDATE BTN -->
-    <div class="col-1">
-      {% if user.is_authenticated %}
-      {% if user.id == post.user.id %}
-      <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
 
-      {% elif request.user.is_staff %}
-      <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
-      {% endif %}
-      {% endif %}
+    <div class="row">
+      <!-- COMMENT BTN -->
+      <div class="col-2 text-right">
+        {% if user.is_authenticated %}
+        <a class="text-primary text-decoration-none col-2 p-2" href="{% url 'addComment' post.id %}">
+          Add Comment</a>
+        {% else %}
+        <a class="text-primary text-decoration-none col-2 p-2" href="{% url 'login' %}">
+          Add Comment</a>
+        {% endif %}
+      </div>
+      <!-- UPDATE BTN -->
+      <div class="col-1 text- center">
+        {% if user.is_authenticated %}
+        {% if user.id == post.user.id %}
+        <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
+
+        {% elif request.user.is_staff %}
+        <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+      </div>
+      <!-- DELETE BTN -->
+      <div class="col-1">
+        {% if user.is_authenticated %}
+        {% if user.id == post.user.id %}
+        <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">
+          Delete</a>
+        {% elif request.user.is_staff %}
+        <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">Delete</a>
+        {% endif %}
+        {% endif %}
+      </div>
+
+
     </div>
-    <!-- DELETE BTN -->
-    <div class="col-1">
-      {% if user.is_authenticated %}
-      {% if user.id == post.user.id %}
-      <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">
-        Delete</a>
-      {% elif request.user.is_staff %}
-      <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">Delete</a>
-      {% endif %}
-      {% endif %}
+    <hr>
+    <div class="row">
+      <div class="col-6">
+        {% if user.is_authenticated %}
+        <form action="{% url 'like_post' post.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">LIKE</button><span
+            class="text-dark"> {{ post.likes.count }} likes</span>
+        </form>
+        {% else %}
+        <a class="btn btn-primary btn-sm" href="{% url 'login' %}">Like</a><span class="text-dark"> {{ post.likes.count
+          }}
+          likes</span>
+        {% endif %}
+      </div>
     </div>
-    <div class="col-2">
-      {% if user.is_authenticated %}
-      <a class="text-primary text-decoration-none col-2 p-2" href="{% url 'addComment' post.id %}">
-        Add Comment</a>
-      {% else %}
-      <a class="text-primary text-decoration-none col-2 p-2" href="{% url 'login' %}">
-        Add Comment</a>
-      {% endif %}
-    </div>
-  </div>
-  <hr>
-  <div class="row">
-    <div class="col-6">
-      {% if user.is_authenticated %}
-      <form action="{% url 'like_post' post.pk %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">LIKE</button><span
-          class="text-dark"> {{ post.likes.count }} likes</span>
-      </form>
-      {% else %}
-      <a class="btn btn-primary btn-sm" href="{% url 'login' %}">Like</a><span class="text-dark"> {{ post.likes.count }}
-        likes</span>
-      {% endif %}
-    </div>
-  </div>
-  {%endblock%}
+    {%endblock%}
 </body>
 
 </html>

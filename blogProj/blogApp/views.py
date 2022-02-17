@@ -40,6 +40,10 @@ def search_menu(request):
                     print("=====================================", tag.name)
                     posts.append(post)
         print("==========", posts)
+        if len(posts) == 0 :
+            for post in allposts:
+                if searched == post.title :
+                    posts.append(post)
         # tags = Post.objects.filter(title=searched)
         context = {"posts" : posts}
         return render(request, 'blogApp/searchtags.html', context)
@@ -126,49 +130,38 @@ def admin_portal(request):
 
 # --------------------------------------------------------------------------------------------- 
 
+def getAllCategories(request):
+    categories = []
+    all_Categories = Category.objects.all()
+    for cat in all_Categories:
+        categories.append(cat)
+        print("===================================cat: ", cat)
+    return categories
+    
+        
+# ---------------------------------------------------------------------------------------------
 # render home page with current logged user
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
+    categories = getAllCategories(request)
     current_user = request.user
-    # name = current_user.username
-    context = {'usr': current_user}
+    home_posts = Post.objects.all().order_by('-id')
+    context = {'usr': current_user, 'categories': categories, 'home_posts' : home_posts}
     return render(request, 'blogApp/home.html', context)
 
-# --------------------------------News Category-----------------------------------------
+# --------------------------------News Category------------------------------------------------
 
-@login_required(login_url='login')
-def redirectNewsAdd(request):
-    catgory_name = "news"
+def redirectCategoryAdd(request, cat):
+    # catgory_name = request.POST['cat_name']
+    catgory_name = cat
+    print("===================================cat add: ", catgory_name)
     return addFollower(request, catgory_name)
-    
-def redirectNewsDelete(request): 
-    catgory_name = "news"
-    return removeFollower(request, catgory_name)
-    
-# --------------------------------Sports Category-----------------------------------------
 
-@login_required(login_url='login')
-def redirectSportsAdd(request):
-    catgory_name = "sports"
-    return addFollower(request, catgory_name)
-    
-@login_required(login_url='login')
-def redirectSportsDelete(request):
-    catgory_name = "sports"
-    return removeFollower(request, catgory_name)
-
-# --------------------------------Politics Category-----------------------------------------
-
-@login_required(login_url='login')
-def redirectPoliticsAdd(request):
-    catgory_name = "politics"
-    return addFollower(request, catgory_name)
-    
-@login_required(login_url='login')
-def redirectPoliticsDelete(request):
-    catgory_name = "politics"
-    return removeFollower(request, catgory_name)
+def redirectCategoryRemove(request, cat):
+    # catgory_name = request.POST.get['cat_name']
+    catgory_name = cat
+    return removeFollower(request, catgory_name)    
     
 # --------------------------------------------------------------------------------------------- 
 
@@ -235,6 +228,19 @@ def users(request):
     print(users)
     context = {'USERS': users}
     return render(request, 'blogApp/users.html', context)
+@login_required(login_url='login')
+def addAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=True 
+    user.save()
+    return users(request)
+
+@login_required(login_url='login')
+def removeAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=False 
+    user.save()
+    return users(request)
 
 @login_required(login_url='login')
 def blockUser(request, user_id):
@@ -243,6 +249,7 @@ def blockUser(request, user_id):
     group.user_set.add(user)
     return users(request)
 
+@login_required(login_url='login')
 def unblockUser(request, user_id):
     group = Group.objects.get(name='blocked')
     user = User.objects.get(id = user_id) 
@@ -308,6 +315,21 @@ def categories(request):
     context = {'CATEGORIES': categories}
     return render(request, 'blogApp/categories.html', context)
 
+@login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
 # --------------------------------------------------------------------------------------------- 
 
 
@@ -360,3 +382,11 @@ class addReplyView(CreateView):
     # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
 
 
+# --------------------------------------------------------------------------------------------- 
+def catPosts(request,cat):
+    # print(cat,"*************************************")
+    # oneCategory = Category.objects.filter(name=cat)
+    # print(oneCategory,"===============================================")
+    cat_posts = Post.objects.all().order_by('-id')
+    context = {'cat_posts': cat_posts,'cat': cat}
+    return render(request, 'blogApp/catPosts.html', context)

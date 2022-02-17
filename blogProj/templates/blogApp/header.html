@@ -33,6 +33,8 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 offset-5">
             {% if request.user.is_staff %}
             <li><a class="nav-link active text-warning" aria-current="page" href="/admin">Blog-Manage</a></li>
+            <li><a class="nav-link active text-warning" aria-current="page" href="{% url 'admin-portal' %}">admin page</a></li>
+
             {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item"><a class="nav-link active text-danger" aria-current="page" href="{% url 'signout' %}">Logout</a></li>

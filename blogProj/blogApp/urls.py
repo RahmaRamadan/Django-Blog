@@ -29,23 +29,41 @@ urlpatterns = [
     path('addCategory', views.addCategory, name='addCategory'),
     path('categories', views.categories, name='categories'),
     path('deleteCategory/<Category_id>', views.deleteCategory, name='deleteCategory'),
-    # path('editCategory/<Category_id>', views.editPost, name='editPost'),
+    path('editCategory/<category_id>', views.editCategory, name='editCategory'),
 
     # users usrls
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
 
-    # add follower
-    path('newsadd/', views.redirectNewsAdd, name='news_add'),
-    path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
-    path('politicsadd/', views.redirectPoliticsAdd, name='politics_add'),
-    # remove follower
-    path('newsdel/', views.redirectNewsDelete, name='news_delete'),
-    path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
-    path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
+    # # add follower
+    # path('newsadd/', views.redirectNewsAdd, name='news_add'),
+    # path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
+    # path('politicsadd/', views.redirectPoliticsAdd, name='politics_add'),
+    # # remove follower
+    # path('newsdel/', views.redirectNewsDelete, name='news_delete'),
+    # path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
+    # path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
 
 
 
+    path('addAdmin/<user_id>', views.addAdmin, name='addAdmin'),
+    path('removeAdmin/<user_id>', views.removeAdmin, name='removeAdmin'),
+
+
+    # # add follower
+    # path('newsadd/', views.redirectNewsAdd, name='news_add'),
+    # path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
+    # path('politicsadd/', views.redirectPoliticsAdd, name='politics_add'),
+    # # remove follower
+    # path('newsdel/', views.redirectNewsDelete, name='news_delete'),
+    # path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
+    # path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
+    
+    path('categoryadd/<str:cat>/', views.redirectCategoryAdd, name='add_category'),
+    path('categoryremove/<str:cat>/', views.redirectCategoryRemove, name='remove_category'),
+    path('catPosts/<str:cat>/', views.catPosts, name='catPosts'),
+    
+    
 ]
 
