@@ -1,6 +1,7 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags ,CommentReply
+from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags ,CommentReply ,ForbiddenWord
+
 
 
 
@@ -71,7 +72,12 @@ class CommentReplyAdmin(admin.ModelAdmin) :
     list_display=("body","comment","user")
     search_fields=["comment","user"]
 
-
+class ForbiddenWordAdmin(admin.ModelAdmin) :
+    fieldsets = (
+        ["ForbiddenWord info", {'fields':["name",]}],
+    )
+    list_display=("name",)
+    search_fields=["name"]
 
 
 
@@ -81,3 +87,5 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(CommentReply, CommentReplyAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(ForbiddenWord, ForbiddenWordAdmin)
+
