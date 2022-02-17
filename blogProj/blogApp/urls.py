@@ -26,7 +26,7 @@ urlpatterns = [
     path('addCategory', views.addCategory, name='addCategory'),
     path('categories', views.categories, name='categories'),
     path('deleteCategory/<Category_id>', views.deleteCategory, name='deleteCategory'),
-    path('editCategory/<Category_id>', views.editPost, name='editPost'),
+    path('editCategory/<category_id>', views.editCategory, name='editCategory'),
 
     # users usrls
     path('users', views.users, name='users'),
