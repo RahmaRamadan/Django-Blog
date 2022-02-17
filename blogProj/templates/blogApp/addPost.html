@@ -7,16 +7,18 @@
     <title>Document</title>
   </head>
 
-  <body class="bg-dark">
+  <body class="bg-light">
     {% extends 'blogApp/base.html' %} {% block content %}
     <div class="form-group row">
-      <div class="offset-4 col-4">
-      <form
+      <div class="offset-1 mt-5 col-4">
+      <form 
         method="POST"
-        class="text-light text-center"
+        class="text-dark text-start"
         enctype="multipart/form-data"
+
       >
-        {% csrf_token %} {{ form.media }} {{ form.as_p }} 
+      <div class="text-danger fs-1 fw-bold"> {% csrf_token %} {{ form.media }} {{ form.as_p }} </div>
+
         <button class="btn btn-success" type="submit">Submit</button>
         <button class="btn btn-danger" type="reset">Reset</button> <br />
         <a class="btn btn-outline-light mt-2" href="{% url 'post' %}"

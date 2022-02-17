@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  {% extends 'blogApp/base.html' %} {% block content %}
+    <form class="d-flex" method='POST' action="{% url 'addForbiddenWords' %}">
+      {% csrf_token %}
+      <input class="form-control me-2" type="text" aria-label="forword" name="forword"> 
+     <button class="btn btn-outline-light ml-2" type="submit"> Search </button>
+    </form>
+
+  {% endblock %}
+</body>
+
+</html>
