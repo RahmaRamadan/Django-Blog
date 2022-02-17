@@ -4,6 +4,11 @@
     <h1 class="text-light">HEADER</h1>
     </div>
     <div class="col-6">
+        <form class="d-flex" method='POST' action="{% url 'searchMenu' %}">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" aria-label="Search" name="searched"> 
+           <button class="btn btn-outline-seconadry" type="submit"> Search </button>
+        </form>
         {% if user.is_authenticated %}
         <span><a class="btn btn-outline-light" href="{% url 'signout' %}">logout</a></span>
         {% else %}
@@ -15,4 +20,4 @@
         {% endif %}
     </div>
 </div>
-</div>
+</div> 

@@ -11,10 +11,9 @@ urlpatterns = [
     path('addPost',views.addPost , name='addPost'),
     path('deletePost/<post_id>',views.deletePost, name='deletePost'),
     path('editPost/<post_id>',views.editPost , name='editPost'),
+    path('searchmenu',views.search_menu, name='searchMenu'),
     # path('addComment/<post_id>',views.addComment , name='addComment'),
     path('addComment/<int:pk>/',AddCommentView.as_view(), name='addComment'),
-
-    #likePost URl
     path('like/<post_id>', LikeView , name='like_post'),
     #auth urls
     path('login',views.loginPg , name='login'),
