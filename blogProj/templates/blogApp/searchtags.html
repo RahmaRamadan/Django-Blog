@@ -24,16 +24,6 @@
         </h5>
         <h5>AUTHOR: {{ post.user }}</h5>
         <h5>POSTED ON: {{ post.post_date }}</h5>
-        <div>
-          <h5>COMMENTS</h5>
-          {% if not post.comments.all %}
-           No Comments Yet :( 
-               {% else %}
-                {% for comment in post.comments.all %}
-          <!-- <strong> {{ comment.date_added }}</strong> -->
-          <br />
-          {{ comment.body }} {% endfor %} {% endif %}
-        </div>
       </div>
 
       <br />

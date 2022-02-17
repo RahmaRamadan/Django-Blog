@@ -36,6 +36,7 @@ urlpatterns = [
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
 
+
     # # add follower
     # path('newsadd/', views.redirectNewsAdd, name='news_add'),
     # path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
@@ -49,5 +50,6 @@ urlpatterns = [
     path('categoryremove/<str:cat>/', views.redirectCategoryRemove, name='remove_category'),
     
     
+
 ]
 
