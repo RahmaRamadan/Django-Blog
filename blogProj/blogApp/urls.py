@@ -35,16 +35,6 @@ urlpatterns = [
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
-
-
-    # # add follower
-    # path('newsadd/', views.redirectNewsAdd, name='news_add'),
-    # path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
-    # path('politicsadd/', views.redirectPoliticsAdd, name='politics_add'),
-    # # remove follower
-    # path('newsdel/', views.redirectNewsDelete, name='news_delete'),
-    # path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
-    # path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
     
     path('categoryadd/<str:cat>/', views.redirectCategoryAdd, name='add_category'),
     path('categoryremove/<str:cat>/', views.redirectCategoryRemove, name='remove_category'),
