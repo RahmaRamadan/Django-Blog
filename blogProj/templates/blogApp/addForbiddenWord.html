@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body class="bg-dark">
+    {% extends 'blogApp/base.html' %} {% block content %}
+    <div class="form-group row">
+        <div class="offset-4 col-4">
+            <form method="POST" class=" text-center" enctype="multipart/form-data" >
+                {% csrf_token %}{{ form.as_p }}
+          
+                <button class="btn btn-success" type="submit">Submit</button>
+                <button class="btn btn-danger" type="reset">Reset</button> <br />
+          
+              </form>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

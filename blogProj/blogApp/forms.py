@@ -2,7 +2,7 @@ from dataclasses import fields
 from re import L
 from django import forms
 
-from .models import Post, Comment ,CommentReply
+from .models import Post, Comment ,CommentReply ,ForbiddenWord
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -76,6 +76,11 @@ class ReplyForm(forms.ModelForm):
             'body' : forms.Textarea(attrs={'class':'form-control'}),
             
         }
+
+class ForbiddenWordForm(forms.ModelForm):
+     class Meta:
+        model = ForbiddenWord
+        fields = ('name',)
 
 
 
