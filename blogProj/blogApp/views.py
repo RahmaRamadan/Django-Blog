@@ -132,7 +132,9 @@ def admin_portal(request):
 def home(request):
     current_user = request.user
     # name = current_user.username
-    context = {'usr': current_user}
+    home_posts = Post.objects.all().order_by('-id')
+    context = {'home_posts': home_posts}
+    context = {'usr': current_user, 'home_posts' : home_posts}
     return render(request, 'blogApp/home.html', context)
 
 # --------------------------------News Category-----------------------------------------
@@ -346,5 +348,19 @@ class AddCommentView(CreateView):
     # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
 
 
+# --------------------------------------------------------------------------------------------- 
+def newsposts(request):
+    news_posts = Post.objects.all().order_by('-id')
+    context = {'news_posts': news_posts}
+    return render(request, 'blogApp/news.html', context)
 
 
+def sportsposts(request):
+    sportsposts = Post.objects.all().order_by('-id')
+    context = {'sportsposts': sportsposts}
+    return render(request, 'blogApp/sports.html', context)
+
+def politicsposts(request):
+    politicsposts = Post.objects.all().order_by('-id')
+    context = {'politicsposts': politicsposts}
+    return render(request, 'blogApp/politics.html', context)
