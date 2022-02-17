@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-from .views import AddCommentView, LikeView
+from .views import AddCommentView, LikeView , addReplyView
 
 
 urlpatterns = [
@@ -15,8 +15,8 @@ urlpatterns = [
     path('deletePost/<post_id>', views.deletePost, name='deletePost'),
     path('editPost/<post_id>', views.editPost, name='editPost'),
     # path('addComment/<post_id>',views.addComment , name='addComment'),
-    path('addComment/<int:pk>/',AddCommentView.as_view(), name='addComment'),
-
+    path('addComment/<int:pk>/',AddCommentView.as_view(), name='addComment'), 
+    path('addReply/<int:pk>/',addReplyView.as_view(), name='addReply'), 
 
     # likePost URl
     path('like/<post_id>', LikeView, name='like_post'),
@@ -29,7 +29,7 @@ urlpatterns = [
     path('addCategory', views.addCategory, name='addCategory'),
     path('categories', views.categories, name='categories'),
     path('deleteCategory/<Category_id>', views.deleteCategory, name='deleteCategory'),
-    # path('editCategory/<Category_id>', views.editPost, name='editPost'),
+    path('editCategory/<category_id>', views.editCategory, name='editCategory'),
 
     # users usrls
     path('users', views.users, name='users'),

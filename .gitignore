@@ -3,8 +3,7 @@ env
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
-**/blogApp/**
-!**/blogApp
-!**/blogProj
-!**/templates/**
-**/blogProj/__pycache__
+**/blogApp/migrations
+**/blogProj/blogApp/__pycache__
+**/blogProj/blogProj/__pycache__
+

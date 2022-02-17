@@ -1,6 +1,6 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags
+from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags ,CommentReply
 
 
 
@@ -51,7 +51,9 @@ class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
         ["comment info", {'fields':["body","post","user"]}],
     )
-    list_display=("body","post","user")
+    def get_replies(self,obj):
+        return "\n".join([p.body for p in obj.replies.all()])
+    list_display=("body","post","user","get_replies")
     search_fields=["post","user"]
 
 
@@ -62,7 +64,13 @@ class TagAdmin(admin.ModelAdmin):
     list_display=("name",)
     inlines = (PostTagsInLine,)
 
-   
+class CommentReplyAdmin(admin.ModelAdmin) :
+    fieldsets = (
+        ["comment info", {'fields':["body","comment","user"]}],
+    )
+    list_display=("body","comment","user")
+    search_fields=["comment","user"]
+
 
 
 
@@ -71,4 +79,5 @@ class TagAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(CommentReply, CommentReplyAdmin)
 admin.site.register(Tag, TagAdmin)

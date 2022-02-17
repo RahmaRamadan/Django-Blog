@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 # models
-from .models import Post, User, Comment, Category
+from .models import Post, User, Comment, Category ,CommentReply
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -233,6 +233,19 @@ def users(request):
     print(users)
     context = {'USERS': users}
     return render(request, 'blogApp/users.html', context)
+@login_required(login_url='login')
+def addAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=True 
+    user.save()
+    return users(request)
+
+@login_required(login_url='login')
+def removeAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=False 
+    user.save()
+    return users(request)
 
 # ---------------------------------------------------------------------------------------------
 
@@ -243,8 +256,8 @@ def blockUser(request, user_id):
     group.user_set.add(user)
     return users(request)
 
-# ---------------------------------------------------------------------------------------------
 
+@login_required(login_url='login')
 def unblockUser(request, user_id):
     group = Group.objects.get(name='blocked')
     user = User.objects.get(id=user_id)
@@ -314,7 +327,23 @@ def categories(request):
     context = {'CATEGORIES': categories}
     return render(request, 'blogApp/categories.html', context)
 
-# ---------------------------------------------------------------------------------------------
+
+@login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
+# --------------------------------------------------------------------------------------------- 
 
 @login_required(login_url='login')
 def deleteCategory(request, Category_id):
@@ -353,3 +382,21 @@ class AddCommentView(CreateView):
     success_url = reverse_lazy('post')
 
 # ---------------------------------------------------------------------------------------------
+class addReplyView(CreateView):
+    model = CommentReply
+    template_name = 'blogApp/addReply.html'
+    form_class = ReplyForm
+    def form_valid(self,form):
+        form.instance.comment_id = self.kwargs['pk']
+        form.instance.user = self.request.user
+        form.instance.date_added = timezone.now()
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+    # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
+
+
+# --------------------------------------------------------------------------------------------- 
+def catPosts(request,cat):
+    cat_posts = Post.objects.all().order_by('-id')
+    context = {'cat_posts': cat_posts,'cat': cat}
+    return render(request, 'blogApp/catPosts.html', context)

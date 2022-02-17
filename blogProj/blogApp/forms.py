@@ -2,7 +2,7 @@ from dataclasses import fields
 from re import L
 from django import forms
 
-from .models import Post, Comment
+from .models import Post, Comment ,CommentReply
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -66,6 +66,18 @@ class CommentForm(forms.ModelForm):
             'body' : forms.Textarea(attrs={'class':'form-control'}),
             
         }
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = CommentReply
+        fields = ('body',)
+
+        widgets = {
+            'body' : forms.Textarea(attrs={'class':'form-control'}),
+            
+        }
+
+
 
         
 

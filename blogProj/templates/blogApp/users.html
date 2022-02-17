@@ -5,13 +5,25 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CATEGORIES</title>
+    <title>USERS</title>
 </head>
 
 <body class="bg-secondary">
     {% extends 'blogApp/base.html' %} {% load static %} {% block content %}
     <ul class="text-dark">
         {% for user in USERS %}
+        {% if user.is_staff %}
+        type:admin
+        <h5>Username : {{user.username}} </h5>
+        <h5>
+            {% for group in user.groups.all %}
+                {{ group }}
+            {% endfor %} 
+        </h5>
+        <a class="btn btn-danger" href="{% url 'removeAdmin' user.id %}"> remove from admins</a>
+        <hr />
+        {% else %}
+        type:normal user
         <h5>Username : {{user.username}} </h5>
         <h5>
             {% for group in user.groups.all %}
@@ -20,7 +32,9 @@
         </h5>
         <a class="btn btn-danger" href="{% url 'blockUser' user.id %}"> block</a>
         <a class="btn btn-danger" href="{% url 'unblockUser' user.id %}"> unblock</a>
+        <a class="btn btn-danger" href="{% url 'addAdmin' user.id %}"> add to admins</a>
         <hr />
+        {% endif %}
         {% endfor %}
     </ul>
     {% endblock %}
