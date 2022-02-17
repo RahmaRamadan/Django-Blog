@@ -301,6 +301,21 @@ def categories(request):
     context = {'CATEGORIES': categories}
     return render(request, 'blogApp/categories.html', context)
 
+@login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
 # --------------------------------------------------------------------------------------------- 
 
 
