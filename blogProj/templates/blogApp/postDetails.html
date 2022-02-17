@@ -46,11 +46,11 @@
         {% if user.is_authenticated %}
           {% if user.id == post.user.id %}
             <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
-          {% endif %}
-        {% endif %}
-        {% if request.user.is_staff %}
+    
+        {% elif request.user.is_staff %}
           <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
         {% endif %}
+      {% endif %}
       </div>
       <!-- DELETE BTN -->
       <div class="col-1">
@@ -59,12 +59,10 @@
               <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">
                 Delete</a
               >
-          {% endif %}
-        {% endif %}
-
-        {% if request.user.is_staff %}
+        {% elif request.user.is_staff %}
           <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">Delete</a>
         {% endif %}
+      {% endif %}
       </div>
       <div class="col-2">
         {% if user.is_authenticated %}

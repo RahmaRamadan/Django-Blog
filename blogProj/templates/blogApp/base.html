@@ -33,7 +33,7 @@
         z-index: 1;
         top: 0;
         left: 0;
-        background-color: #111;
+        /* background-color: #111; */
         overflow-x: hidden;
         padding-top: 20px;
       }
@@ -53,27 +53,27 @@
 
       .main {
         margin-left: 260px;
-        padding: 0px 10px;
+        padding: 0px;
       }
       .color_i {
         padding: 40px 8px 6px 16px;
         text-decoration: none;
         font-size: 28px;
-        color: #00b894;
+        /* color: #00b894; */
         display: block;
       }
       .color_minus{
         padding: 40px 8px 6px 16px;
         text-decoration: none;
         font-size: 28px;
-        color:#d63031;
+        /* color:#d63031; */
         display: block;
       }
     </style>
   </head>
   <body class="bg-light">
-    {% include 'blogApp/header.html' %}
-    <div class="sidenav">
+ 
+    <div class="sidenav bg-dark">
       <div class="row">
         <div class="col-2"></div>
         <a href="{% url 'home' %}" class="col-5 a-nav">Home </a>
@@ -81,28 +81,30 @@
       <div class="row">
         <div class="col-2"></div>
         <a href="#" class="col-5 a-nav">News </a
-        ><a href="{% url 'news_add' %}" class="fa fa-plus color_i col-2"></a>
-        <a href="{% url 'news_delete' %}" class="fa fa-minus color_minus col-2"></a>
+        ><a href="{% url 'news_add' %}" class="fa fa-plus color_i text-warning col-2"></a>
+        <a href="{% url 'news_delete' %}" class="fa fa-minus color_minus text-danger col-2"></a>
       </div>
       <div class="row">
         <div class="col-2"></div>
         <a href="#" class="col-5 a-nav">Sports </a
-        ><a href="{% url 'sports_add' %}" class="fa fa-plus color_i col-2"></a>
-        <a href="{% url 'sports_delete' %}" class="fa fa-minus color_minus col-2"></a>
+        ><a href="{% url 'sports_add' %}" class="fa fa-plus color_i text-warning col-2"></a>
+        <a href="{% url 'sports_delete' %}" class="fa fa-minus color_minus text-danger col-2"></a>
       </div>
       <div class="row">
         <div class="col-2"></div>
         <a href="#" class="col-5 a-nav">Politics </a
-        ><a href="{% url 'politics_add' %}" class="fa fa-plus color_i col-2"></a>
-        <a href="{% url 'politics_delete' %}" class="fa fa-minus color_minus col-2"></a>
+        ><a href="{% url 'politics_add' %}" class="fa fa-plus color_i text-warning col-2"></a>
+        <a href="{% url 'politics_delete' %}" class="fa fa-minus color_minus text-danger col-2"></a>
       </div>
     </div>
 
     <div id="content" name="content" class="main">
-      <div class="row container-fluid">
+      <div class="row">
         <div class="col-12">
-          <hr class="mt-0 mb-4" />
-          {% block content %} {% endblock %}
+          {% include 'blogApp/header.html' %}
+          {% block content %} 
+       
+          {% endblock %}
         </div>
       </div>
     </div>

@@ -191,7 +191,7 @@ def addFollower(request, catgory_name):
                 if follower.username == log_user:
                     found = True
                     print("this user already exists in this category")
-                    return render(request, 'blogApp/news.html')
+                    return render(request, 'blogApp/'+str(catgory_name)+'.html')
 
     if found == False:
         Category.objects.get(name=catgory_name).followers.add(request.user)
