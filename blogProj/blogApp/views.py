@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 # models
-from .models import Post, User, Comment, Category
+from .models import Post, User, Comment, Category ,CommentReply
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
@@ -346,5 +346,17 @@ class AddCommentView(CreateView):
     # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
 
 
+
+class addReplyView(CreateView):
+    model = CommentReply
+    template_name = 'blogApp/addReply.html'
+    form_class = ReplyForm
+    def form_valid(self,form):
+        form.instance.comment_id = self.kwargs['pk']
+        form.instance.user = self.request.user
+        form.instance.date_added = timezone.now()
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+    # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
 
 

@@ -51,7 +51,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, through='PostTags')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post_date = models.DateField(auto_now_add=True)
+    post_date = models.DateField(auto_now_add=True,null=True)
     likes = models.ManyToManyField(User, related_name='blog_posts')
     
     def total_likes(self):
@@ -77,9 +77,20 @@ class Comment(models.Model):
         Post, related_name='comments', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=False,null=True)
+    
     class Meta: 
         ordering = ('date_added',) 
 
     def __str__(self):
         return self.post.title 
 
+class CommentReply(models.Model):
+    body = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment,related_name='replies', on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=False,null=True)
+    class Meta: 
+        ordering = ('date_added',) 
+
+    def __str__(self):
+        return self.body
