@@ -15,7 +15,7 @@
     {% for category in CATEGORIES %}
     <h5>name: {{category.name}} </h5>
     <a class="btn btn-danger" href="{% url 'deleteCategory' category.id %}"> delete</a>
-
+    <a class="btn btn-danger" href="{% url 'editCategory' category.id %}"> edit</a>
     <hr/>
     {% endfor %}
   </ul>

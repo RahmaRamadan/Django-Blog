@@ -286,6 +286,21 @@ def deleteCategory(request, Category_id):
     return redirect('admin-portal')
     
 @login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
+@login_required(login_url='login')
 def editPost(request, post_id):
     post = Post.objects.get(id=post_id)
     if (request.method == 'POST'):
