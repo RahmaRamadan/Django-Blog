@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+
 from .views import AddCommentView, LikeView
 
 
@@ -13,7 +14,8 @@ urlpatterns = [
     path('deletePost/<post_id>', views.deletePost, name='deletePost'),
     path('editPost/<post_id>', views.editPost, name='editPost'),
     # path('addComment/<post_id>',views.addComment , name='addComment'),
-    path('addComment/<int:pk>/', AddCommentView.as_view(), name='addComment'),
+    path('addComment/<int:pk>/',AddCommentView.as_view(), name='addComment'),
+
 
     # likePost URl
     path('like/<post_id>', LikeView, name='like_post'),
@@ -32,7 +34,17 @@ urlpatterns = [
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
-    path('sports/', views.redirectSports, name='redirect_sports'),
-    path('news/', views.redirectNews, name='redirect_news'),
-    path('politics/', views.redirectPolitics, name='redirect_politics'),
+
+    # add follower
+    path('newsadd/', views.redirectNewsAdd, name='news_add'),
+    path('sportsadd/', views.redirectSportsAdd, name='sports_add'),
+    path('politicsadd/', views.redirectPoliticsAdd, name='politics_add'),
+    # remove follower
+    path('newsdel/', views.redirectNewsDelete, name='news_delete'),
+    path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
+    path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
+
+
+
+
 ]
