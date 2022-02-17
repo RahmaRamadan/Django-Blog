@@ -49,8 +49,9 @@ urlpatterns = [
     path('newsposts/', views.newsposts, name='newsposts'),
     path('sportsposts/', views.sportsposts, name='sportsposts'),
     path('politicsposts/', views.politicsposts, name='politicsposts'),
-
-
+#dmin
+   path('addForbiddenWords/', views.addForbiddenWords, name='addForbiddenWords'),
+   path('redirectForbidden/', views.redirectForbidden, name='redirectForbidden'),
 
 ]
-
+ 

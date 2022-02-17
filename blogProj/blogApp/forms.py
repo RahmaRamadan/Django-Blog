@@ -2,7 +2,7 @@ from dataclasses import fields
 from re import L
 from django import forms
 
-from .models import Post, Comment
+from .models import Post,Comment,ForbiddenWord,Comment
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -67,5 +67,10 @@ class CommentForm(forms.ModelForm):
             
         }
 
+
+# class forbiddenWordForm(forms.ModelForm):
+#     class Meta:
+#         model = ForbiddenWord
+#         fields = ('name',)
         
 

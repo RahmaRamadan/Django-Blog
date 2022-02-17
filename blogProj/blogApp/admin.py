@@ -1,6 +1,6 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags
+from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags, ForbiddenWord
 
 
 
@@ -63,8 +63,11 @@ class TagAdmin(admin.ModelAdmin):
     inlines = (PostTagsInLine,)
 
    
-
-
+class ForbiddenWordAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ["comment info", {'fields':["name"]}],
+    )
+    list_display=("name",)
 
 
 # admin.site.register(User, UserAdmin)
@@ -72,3 +75,4 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(ForbiddenWord, ForbiddenWordAdmin)

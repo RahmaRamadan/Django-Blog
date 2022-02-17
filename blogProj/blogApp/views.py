@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 # models
-from .models import Post, User, Comment, Category
+from .models import ForbiddenWord, Post, User, Comment, Category
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
@@ -368,3 +368,21 @@ def politicsposts(request):
     politicsposts = Post.objects.all().order_by('-id')
     context = {'politicsposts': politicsposts}
     return render(request, 'blogApp/politics.html', context)
+
+def redirectForbidden(request):
+    return render(request, 'blogApp/addForbidden.html')
+
+def addForbiddenWords(request):
+    if request.method == 'POST':
+        forword = request.POST['forword']
+        word = ForbiddenWord.objects.filter(name = forword)
+        print("=====================================",word)
+        context = {'word': word}
+        return render(request, 'blogApp/home.html', context)
+            
+
+    else:
+        
+        print("rahhmmaaaaaa")
+        # context = {'form': form, }
+        # return render(request, 'blogApp/addForbidden.html', context)
