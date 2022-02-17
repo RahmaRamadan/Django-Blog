@@ -36,7 +36,9 @@
         {% else %}
         {% for comment in post.comments.all %}
         <!-- <strong> {{ comment.date_added }}</strong> -->
-
+        #--------------------
+          
+        #--------------------
         <h3> {{ comment.user.username }} : {{ comment.body }}</h3>
 
         commented at: {{ comment.date_added }}

@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm ,ForbiddenWordForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 # models
-from .models import Post, User, Comment, Category ,CommentReply
+from .models import Post, User, Comment, Category ,CommentReply ,ForbiddenWord
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
@@ -363,6 +363,24 @@ class AddCommentView(CreateView):
         form.instance.post_id = self.kwargs['pk']
         form.instance.user = self.request.user
         form.instance.date_added = timezone.now()
+        lastoutput=""
+        forbidden =ForbiddenWord.objects.all()
+        forbiddenList =[]
+        for obj in forbidden:
+            forbiddenList.append(obj.name)
+        print("===========================================",forbiddenList)
+        listWords= form.instance.body.split()
+        for word in listWords:
+            if word in forbiddenList:
+                lastoutput += " "
+                for i in word:
+                   lastoutput += '*'
+                lastoutput += " "
+            else:
+                lastoutput += word
+            
+        print("===========================================",lastoutput)   
+        form.instance.body=lastoutput
         return super().form_valid(form)    
     success_url = reverse_lazy('post')
     # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
@@ -390,3 +408,25 @@ def catPosts(request,cat):
     cat_posts = Post.objects.all().order_by('-id')
     context = {'cat_posts': cat_posts,'cat': cat}
     return render(request, 'blogApp/catPosts.html', context)
+#------------------------------------
+#ForbiddenWord
+class addForbiddenWord(CreateView):
+    model = ForbiddenWord
+    template_name = 'blogApp/addForbiddenWord.html'
+    form_class = ForbiddenWordForm
+    def form_valid(self,form):
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+# def addForbiddenWord(request):
+#     if(request.method == 'POST'):
+#         form = ForbiddenWordForm()
+#         if form.is_valid():
+#             form.save()
+#             return redirect('post')
+#         else:
+#             return redirect('home')
+
+#     else:
+#         form = ForbiddenWordForm()
+#         context = {'form': form, }
+#         return render(request, 'blogApp/addForbiddenWord.html', context)
