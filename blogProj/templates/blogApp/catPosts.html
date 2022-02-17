@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Posts</title>
+</head>
+<body>
+{% extends 'blogApp/base.html' %} {% load static %}
+{% block content %}
+
+<h1 class="text-capitalize">{{ cat }} Posts</h1>
+<div class="sidenav bg-dark">
+  <div class="row">
+    <div class="col-2"></div>
+    <a href="{% url 'home' %}" class="col-5 a-nav">Home </a>
+  </div>
+  {% for cat in categories %}
+  <div class="row">
+    <div class="col-2"></div>
+    <a href="{% url 'catPosts' cat %}" name="cat_name" class="col-5 a-nav"> {{ cat }} </a
+    ><a href="{% url 'add_category' cat %}" value={{cat}} class="fa fa-plus color_i text-warning col-2"></a>
+    <a href="{% url 'remove_category' cat %}" value={{cat}} class="fa fa-minus color_minus text-danger col-2"></a>
+ </div>
+  {% endfor %}
+</div>
+
+    <ul class="text-dark">
+    {% for post in cat_posts %}
+        {% if post.category.name == cat %}
+        <!-- POST TITLE -->
+        <h5>{{post.title}}</h5>
+        <!-- POST IMAGE -->
+        <a href="{% url 'postDetails' post.id %}"><img src="{{ MEDIA_URL }}{{ post.postpicture }}" width="35%" /></a>
+        <h5>DATE: {{ post.post_date }}</h5>
+        <div class="container-fluid">
+            <div class="row">
+            <!-- COMMENT BTN -->
+            <div class="col-2 text-right">
+              {% if user.is_authenticated %}
+                <a
+                  class="text-primary text-decoration-none col-2 p-2"
+                  href="{% url 'addComment' post.id %}"
+                >
+                  Add Comment</a 
+                >
+              {% else %}
+                  <a
+                      class="text-primary text-decoration-none col-2 p-2"
+                      href="{% url 'login' %}"
+                    >
+                      Add Comment</a 
+                    >
+              {% endif %}
+            </div>
+            <!-- DETAILS BTN -->
+        <div class="col-1">
+            {% if user.is_authenticated %}
+                <a
+                  class="text-primary text-decoration-none col-2 p-2"
+                  href="{% url 'postDetails' post.id %}"
+                >
+                  Details</a
+                >
+              {% elif request.user.is_staff %}
+                  <a
+                  class="text-primary text-decoration-none col-2 p-2"
+                  href="{% url 'postDetails' post.id %}"
+                >
+                  Details</a
+                >
+            {% else %}
+            <a
+                  class="text-primary text-decoration-none col-2 p-2"
+                  href="{% url 'postDetails' post.id %}"
+                >
+                  Details</a
+                >
+            {% endif %}
+          </div>
+          <!-- UPDATE BTN -->
+          <div class="col-1">
+          {% if user.is_authenticated %}
+            {% if user.id == post.user.id %}
+              <a
+                class="text-primary text-decoration-none col-2 mx-2 p-2"
+                href="{% url 'editPost' post.id %}"
+              >
+                Update</a
+              >
+            {% elif request.user.is_staff %}
+              <a
+                  class="text-primary text-decoration-none col-2 mx-2 p-2"
+                  href="{% url 'editPost' post.id %}"
+                >
+                  Update</a
+                >
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="col-1">
+          <!-- DELETE BTN -->
+          {% if user.is_authenticated %}
+            {% if user.id == post.user.id %}
+            <a
+              class="text-danger text-decoration-none col-2 mx-2 p-2"
+              href="{% url 'deletePost' post.id %}"
+            >
+              Delete</a
+            >
+            {% elif request.user.is_staff %}
+            <a
+              class="text-danger text-decoration-none col-2 mx-2 p-2"
+              href="{% url 'deletePost' post.id %}"
+            >
+              Delete</a
+            >
+            {% endif %}
+          {% endif %}
+          </div>
+        </div>
+        <hr />
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endblock %}
+</body>
+</html>

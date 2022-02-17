@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>post</title>
+    <title>NewsFeed</title>
   </head>
+
 
   <body style="background-color: #ecf0f1 !important">
     {% extends 'blogApp/base.html' %} {% load static %} {% block content %}
@@ -16,13 +17,12 @@
       <!-- POST TITLE -->
       <h5>{{post.title}}</h5>
       <!-- POST IMAGE -->
-      <img src="{{ MEDIA_URL }}{{ post.postpicture }}" width="35%" />
-      <h5>CREATE USER: {{ post.user }}</h5>
+        <a href="{% url 'postDetails' post.id %}"><img src="{{ MEDIA_URL }}{{ post.postpicture }}" width="35%" /></a>
+      <!-- <h5>CREATE USER: {{ post.user }}</h5> -->
       <!-- POST DATE -->
       <h5>DATE: {{ post.post_date }}</h5>
+      <h5>Category: {{ post.category.name }}</h5>
       <div class="container-fluid">
-      
-        
         <div class="row">
         <!-- COMMENT BTN -->
         <div class="col-2 text-right">

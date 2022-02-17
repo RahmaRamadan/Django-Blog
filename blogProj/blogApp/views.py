@@ -1,25 +1,49 @@
+from ast import Return
 from multiprocessing import context
+from turtle import title
+import re
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm ,ForbiddenWordForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.models import User
 # models
-from .models import Post, User, Comment, Category
-#
-from django.views.generic.edit  import CreateView
-
+from .models import Post, User, Comment, Category ,CommentReply ,ForbiddenWord
+from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
-from django.urls import reverse,reverse_lazy
-
+from django.urls import reverse, reverse_lazy
+# datetime
+from django.utils import timezone
 from django.contrib.auth.models import Group, User
-#likePost View
+
+# Search Feature
+def search_menu(request):
+    posts = []
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        allposts = Post.objects.all()
+        for post in allposts:
+            for tag in post.tags.all():
+                if searched == tag.name:
+                    posts.append(post)
+        if len(posts) == 0:
+            for post in allposts:
+                if searched == post.title:
+                    posts.append(post)
+        context = {"posts": posts}
+        return render(request, 'blogApp/searchtags.html', context)
+    else:
+        return render(request, 'blogApp/searchtags.html')
+# ---------------------------------------------------------------------------------------------
+
+# likePost View
 def LikeView(request, post_id):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     liked = False
@@ -31,6 +55,7 @@ def LikeView(request, post_id):
         liked = True
     return HttpResponseRedirect(reverse('postDetails', args=[str(post_id)]))
 
+# ---------------------------------------------------------------------------------------------
 
 
 def loginPg(request):
@@ -55,10 +80,14 @@ def loginPg(request):
                 messages.info(request, 'User name or password is incorrect')
         return render(request, 'blogApp/login.html')
 
+# ---------------------------------------------------------------------------------------------
+
 
 def signoutPg(request):
     logout(request)
     return redirect('login')
+
+# ---------------------------------------------------------------------------------------------
 
 
 def signupPg(request):
@@ -78,10 +107,11 @@ def signupPg(request):
         context = {'signup_form': signup_form}
         return render(request, 'blogApp/signup.html', context)
 
+# ---------------------------------------------------------------------------------------------
+
 # Create your views here.
 @login_required(login_url='login')
 def admin_portal(request):
-    userDetails(request)
     current_user = request.user
     print(current_user)
     context = {'usr': current_user}
@@ -90,61 +120,108 @@ def admin_portal(request):
     else:
         return render(request, 'blogApp/AUTHORIZATION.html', context)
 
+# ---------------------------------------------------------------------------------------------
 
-# @login_required(login_url='login')
+
+def getAllCategories(request):
+    categories = []
+    all_Categories = Category.objects.all()
+    for cat in all_Categories:
+        categories.append(cat)
+    return categories
+
+
+# ---------------------------------------------------------------------------------------------
 # render home page with current logged user
+# Create your views here.
+@login_required(login_url='login')
 def home(request):
-    userDetails(request)
+    categories = getAllCategories(request)
     current_user = request.user
-    # name = current_user.username
-    context = {'usr': current_user}
+    home_posts = Post.objects.all().order_by('-id')
+    context = {'usr': current_user,
+               'categories': categories, 'home_posts': home_posts}
     return render(request, 'blogApp/home.html', context)
 
-
-@login_required(login_url='login')
-def redirectNews(request):
-    # log_user = request.user.username
-    # catgory_name = "news"
-    # found = False
-    # all_categories = Category.objects.all()
-    # for cat in all_categories:
-    #     if cat.name == catgory_name:
-    #         for follwer in cat.followers:
-    #             if cat.followers.username == log_user:
-    #                 found = True
-    #                 return render(request, 'blogApp/subscribeOutput.html')
-    #             else:
-    #                 found = True
-    #                 return render(request, 'blogApp/notsubscribeOutput.html')
-    # if found == False:
-    #     return "False"
-    return render(request, 'blogApp/news.html')
+# --------------------------------News Category------------------------------------------------
+# get all posts
 
 
-@login_required(login_url='login')
-def redirectSports(request):
-    catgory_name = "sports"
-    return render(request, 'blogApp/sports.html')
+def catPosts(request, cat):
+    cat_posts = Post.objects.all().order_by('-id')
+    all_categories = Category.objects.all()
+    context = {'cat_posts': cat_posts,
+               'cat': cat, 'categories': all_categories}
+    return render(request, 'blogApp/catPosts.html', context)
+
+# ---------------------------------------------------------------------------------------------
+
+def redirectCategoryAdd(request, cat):
+    catgory_name = cat
+    return addFollower(request, catgory_name)
 
 
-@login_required(login_url='login')
-def redirectPolitics(request):
-    catgory_name = "politics"
-    return render(request, 'blogApp/politics.html')
+def redirectCategoryRemove(request, cat):
+    catgory_name = cat
+    return removeFollower(request, catgory_name)
+
+# ---------------------------------------------------------------------------------------------
 
 
-@login_required(login_url='login')
-def userDetails(request):
-    log_user = request.user.id
-    all_users = User.objects.all()
+def addFollower(request, catgory_name):
+    log_user = request.user.username
+    found = False
+    all_categories = Category.objects.all()
+    catPosts(request, catgory_name)
+    for cat in all_categories:
+        if cat.name == catgory_name:
+            all_followers = cat.followers.all()
+            for follower in all_followers:
+                if follower.username == log_user:
+                    found = True
+                    messages.info(
+                        request, "This User Already Exists in This Category")
+                    return HttpResponseRedirect(reverse('catPosts', args=[str(catgory_name)]))
+                else:
+                    found = False
+    if found == False:
+        Category.objects.get(name=catgory_name).followers.add(request.user)
+        messages.info(request, 'Successfully Sunscribed in This Category')
+        return HttpResponseRedirect(reverse('home'))
 
-    return True
+# ---------------------------------------------------------------------------------------------
 
+
+def removeFollower(request, catgory_name):
+    log_user = request.user.username
+    found = False
+    all_categories = Category.objects.all()
+
+    for cat in all_categories:
+        if cat.name == catgory_name:
+            all_followers = cat.followers.all()
+            for follower in all_followers:
+                if follower.username == log_user:
+                    found = True
+                    Category.objects.get(
+                        name=catgory_name).followers.remove(request.user)
+                    messages.info(request, "deleted successfully")
+                    return HttpResponseRedirect(reverse('home'))
+                else:
+                    found = False
+    if found == False:
+        messages.info(request, "this user does not exist in this category")
+        return HttpResponseRedirect(reverse('home'))
+
+
+# ---------------------------------------------------------------------------------------------
 
 def post(request):
     all_posts = Post.objects.all().order_by('-id')
     context = {'all_posts': all_posts}
     return render(request, 'blogApp/post.html', context)
+
+# ---------------------------------------------------------------------------------------------
 
 @login_required(login_url='login')
 def users(request):
@@ -152,26 +229,43 @@ def users(request):
     print(users)
     context = {'USERS': users}
     return render(request, 'blogApp/users.html', context)
+@login_required(login_url='login')
+def addAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=True 
+    user.save()
+    return users(request)
+
+@login_required(login_url='login')
+def removeAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=False 
+    user.save()
+    return users(request)
 
 @login_required(login_url='login')
 def blockUser(request, user_id):
     group = Group.objects.get(name='blocked')
-    user = User.objects.get(id = user_id) 
+    user = User.objects.get(id=user_id)
     group.user_set.add(user)
     return users(request)
 
+
+@login_required(login_url='login')
 def unblockUser(request, user_id):
     group = Group.objects.get(name='blocked')
-    user = User.objects.get(id = user_id) 
+    user = User.objects.get(id=user_id)
     group.user_set.remove(user)
     return users(request)
 
-
+# ---------------------------------------------------------------------------------------------
 
 def postDetails(request, post_id):
     post = Post.objects.get(id=post_id)
     context = {'post': post}
     return render(request, 'blogApp/postDetails.html', context)
+
+# ---------------------------------------------------------------------------------------------
 
 
 @login_required(login_url='login')
@@ -180,30 +274,34 @@ def deletePost(request, post_id):
     post.delete()
     return redirect('post')
 
+# ---------------------------------------------------------------------------------------------
+
 
 @login_required(login_url='login')
 def addPost(request):
     if(request.method == 'POST'):
         form = PostForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            post=form.save(commit=False)
+            post = form.save(commit=False)
             post.user = request.user
             post.save()
+            form.save_m2m()
             return redirect('post')
         else:
             return redirect('home')
-
     else:
-        form=PostForm()
-        context={'form' : form,}
-        return render(request, 'blogApp/addPost.html',context)
+        form = PostForm()
+        context = {'form': form, }
+        return render(request, 'blogApp/addPost.html', context)
+
+# ---------------------------------------------------------------------------------------------
 
 @login_required(login_url='login')
 def addCategory(request):
     if(request.method == 'POST'):
         form = CategoryFormAdmin(request.POST or None, request.FILES or None)
         if form.is_valid():
-            Category=form.save(commit=False)
+            Category = form.save(commit=False)
             Category.user = request.user
             Category.save()
             return redirect('admin-portal')
@@ -211,9 +309,11 @@ def addCategory(request):
             return redirect('admin-portal')
 
     else:
-        form=CategoryFormAdmin()
-        context={'form' : form,}
-        return render(request, 'blogApp/addCategory.html',context)
+        form = CategoryFormAdmin()
+        context = {'form': form, }
+        return render(request, 'blogApp/addCategory.html', context)
+
+# ---------------------------------------------------------------------------------------------
 
 @login_required(login_url='login')
 def categories(request):
@@ -221,12 +321,49 @@ def categories(request):
     context = {'CATEGORIES': categories}
     return render(request, 'blogApp/categories.html', context)
 
+
+@login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
+# --------------------------------------------------------------------------------------------- 
+
+@login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
+# --------------------------------------------------------------------------------------------- 
+
 @login_required(login_url='login')
 def deleteCategory(request, Category_id):
     CategoryVar = Category.objects.get(id=Category_id)
     CategoryVar.delete()
     return redirect('admin-portal')
-    
+
+# ---------------------------------------------------------------------------------------------
+
 @login_required(login_url='login')
 def editPost(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -242,44 +379,69 @@ def editPost(request, post_id):
         context = {'form': form}
         return render(request, 'blogApp/editPost.html', context)
 
-
-# @login_required(login_url='login')
-
+# ---------------------------------------------------------------------------------------------
 class AddCommentView(CreateView):
     model = Comment
-    template_name =  'blogApp/addComment.html'
+    template_name = 'blogApp/addComment.html'
     form_class = CommentForm
-    success_url = reverse_lazy('home')
-    def form_valid(self,form):
+
+    def form_valid(self, form):
         form.instance.post_id = self.kwargs['pk']
         form.instance.user = self.request.user
-        return super().form_valid(form)
-    
+        form.instance.date_added = timezone.now()
 
+# ---------------------------------------------------------------------------------------------
+
+        lastoutput=""
+        forbidden =ForbiddenWord.objects.all()
+        forbiddenList =[]
+        for obj in forbidden:
+            forbiddenList.append(obj.name)
+        print("===========================================",forbiddenList)
+        listWords= form.instance.body.split()
+        for word in listWords:
+            if word in forbiddenList:
+                lastoutput += " "
+                for i in word:
+                   lastoutput += '*'
+                lastoutput += " "
+            else:
+                lastoutput += word
+            
+        print("===========================================",lastoutput)   
+        form.instance.body=lastoutput
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
    
+# ---------------------------------------------------------------------------------------------
+class addReplyView(CreateView):
+    model = CommentReply
+    template_name = 'blogApp/addReply.html'
+    form_class = ReplyForm
+    def form_valid(self,form):
+        form.instance.comment_id = self.kwargs['pk']
+        form.instance.user = self.request.user
+        form.instance.date_added = timezone.now()
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+    # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
 
 
+# --------------------------------------------------------------------------------------------- 
 
-# def addComment(request,post_id):
-#     post=Post.objects.get(id=post_id)
-#     # new_comment = None
-#     if(request.method == 'POST'):
-#         # form = CommentForm(data=request.POST)
-#         form=CommentForm(request.POST, instance=post)
-#         if form.is_valid():
-#             # Create Comment object but don't save to database yet
-#             # new_comment = form.save(commit=False)
-#             # Assign the current post to the comment
-#             # new_comment.post = post
-#             # Save the comment to the database
-#             # new_comment.save()
-#             form.save()
-#             return redirect('post')
-#         else:
-#             return redirect('home')
+def catPosts(request,cat):
+    cat_posts = Post.objects.all().order_by('-id')
+    context = {'cat_posts': cat_posts,'cat': cat}
+    return render(request, 'blogApp/catPosts.html', context)
 
-#     else:
-#         form=CommentForm(instance=post)
-#         # form=CommentForm()
-#         context={'form' : form , 'post' : post}
-#         return render(request, 'blogApp/addComment.html',context)
+# --------------------------------------------------------------------------------------------- 
+
+#ForbiddenWord
+class addForbiddenWord(CreateView):
+    model = ForbiddenWord
+    template_name = 'blogApp/addForbiddenWord.html'
+    form_class = ForbiddenWordForm
+    def form_valid(self,form):
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+

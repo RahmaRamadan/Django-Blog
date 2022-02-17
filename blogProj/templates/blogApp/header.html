@@ -1,7 +1,7 @@
-<div class="offset-1">
+<div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="#">Django Blog</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -25,13 +25,16 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-light ml-2" type="submit">Search</button>
+        <form class="d-flex" method='POST' action="{% url 'searchMenu' %}">
+          {% csrf_token %}
+          <input class="form-control me-2" type="search" aria-label="Search" name="searched"> 
+         <button class="btn btn-outline-light ml-2" type="submit"> Search </button>
         </form>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 offset-5">
             {% if request.user.is_staff %}
             <li><a class="nav-link active text-warning" aria-current="page" href="/admin">Blog-Manage</a></li>
+            <li><a class="nav-link active text-warning" aria-current="page" href="{% url 'admin-portal' %}">admin page</a></li>
+
             {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item"><a class="nav-link active text-danger" aria-current="page" href="{% url 'signout' %}">Logout</a></li>
@@ -44,5 +47,6 @@
         </ul>
       </div>
     </div>
+
   </nav>
 </div>
