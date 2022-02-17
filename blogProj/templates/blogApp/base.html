@@ -88,7 +88,7 @@
   </head>
   <body class="bg-light">
     <div class="sidenav bg-dark">
-    {% include 'blogApp/header.html' %}
+  
 
       <div class="row">
         <div class="col-2"></div>
@@ -97,8 +97,8 @@
      {% for cat in categories %}
       <div class="row">
         <div class="col-2"></div>
-        <a href="{% url 'catPosts' cat %}" name="cat_name" class="col-5 a-nav"> {{ cat }} </a
-        ><a href="{% url 'add_category' cat %}" value={{cat}} class="fa fa-plus color_i text-warning col-2"></a>
+        <a href="{% url 'catPosts' cat %}" name="cat_name" class="col-5 a-nav text-capitalize"> {{ cat }} </a
+        ><a href="{% url 'add_category' cat %}" value={{cat}} class="fa fa-plus color_i text-warning col-2" style="color: #1abc9c !important;" ></a>
         <a href="{% url 'remove_category' cat %}" value={{cat}} class="fa fa-minus color_minus text-danger col-2"></a>
      </div>
       {% endfor %}
