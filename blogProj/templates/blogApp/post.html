@@ -17,8 +17,8 @@
       <!-- POST TITLE -->
       <h5>{{post.title}}</h5>
       <!-- POST IMAGE -->
-      <img src="{{ MEDIA_URL }}{{ post.postpicture }}" width="35%" />
-      <h5>CREATE USER: {{ post.user }}</h5>
+        <a href="{% url 'postDetails' post.id %}"><img src="{{ MEDIA_URL }}{{ post.postpicture }}" width="35%" /></a>
+      <!-- <h5>CREATE USER: {{ post.user }}</h5> -->
       <!-- POST DATE -->
       <h5>DATE: {{ post.post_date }}</h5>
       <div class="container-fluid">

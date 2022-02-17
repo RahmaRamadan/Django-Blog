@@ -1,12 +1,18 @@
 from dataclasses import field
 from django.contrib import admin
-from .models import User,Category,Post,Comment,Tag, UsersCategories
+from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags
 
 
 
 class UserCategoryInline(admin.TabularInline):
     model = UsersCategories
     extra = 1
+
+
+class PostTagsInLine(admin.TabularInline):
+    model = PostTags
+    extra = 1
+
 
 
 # class UserAdmin(admin.ModelAdmin):
@@ -32,16 +38,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
-        ["post info", {'fields': ["title", "postpicture",
-                                  "content", "category", "tags", "user"]}],
+        ["post info", {'fields': ["title", "postpicture", "content", "category", "user"]}],
     )
     def get_tags(self,obj):
         return "\n".join([p.name for p in obj.tags.all()])
-    def get_likes(self,obj):
-        return "\n".join([p.username for p in obj.likes.all()])
 
-    list_display=("title","postpicture","content","category","get_tags","user","get_likes")
+    list_display=("title","postpicture","content","category","show_tags","user")
     search_fields=["user"]
+    inlines = (PostTagsInLine,)
 
 class CommentAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -55,6 +59,9 @@ class TagAdmin(admin.ModelAdmin):
     fieldsets = (
         ["tag info", {'fields':["name"]}],
     )
+    list_display=("name",)
+    inlines = (PostTagsInLine,)
+
    
 
 
@@ -62,6 +69,6 @@ class TagAdmin(admin.ModelAdmin):
 
 # admin.site.register(User, UserAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Post,PostAdmin)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Tag, TagAdmin)
