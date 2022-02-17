@@ -228,6 +228,19 @@ def users(request):
     print(users)
     context = {'USERS': users}
     return render(request, 'blogApp/users.html', context)
+@login_required(login_url='login')
+def addAdmin(request, user_id):
+    group = Group.objects.get(name='admin')
+    user = User.objects.get(id = user_id) 
+    group.user_set.add(user)
+    return users(request)
+
+@login_required(login_url='login')
+def removeAdmin(request, user_id):
+    group = Group.objects.get(name='admin')
+    user = User.objects.get(id = user_id) 
+    group.user_set.remove(user)
+    return users(request)
 
 @login_required(login_url='login')
 def blockUser(request, user_id):
@@ -236,6 +249,7 @@ def blockUser(request, user_id):
     group.user_set.add(user)
     return users(request)
 
+@login_required(login_url='login')
 def unblockUser(request, user_id):
     group = Group.objects.get(name='blocked')
     user = User.objects.get(id = user_id) 

@@ -35,6 +35,8 @@ urlpatterns = [
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
+    path('addAdmin/<user_id>', views.addAdmin, name='addAdmin'),
+    path('removeAdmin/<user_id>', views.removeAdmin, name='removeAdmin'),
 
 
     # # add follower
