@@ -40,6 +40,10 @@ def search_menu(request):
                     print("=====================================", tag.name)
                     posts.append(post)
         print("==========", posts)
+        if len(posts) == 0 :
+            for post in allposts:
+                if searched == post.title :
+                    posts.append(post)
         # tags = Post.objects.filter(title=searched)
         context = {"posts" : posts}
         return render(request, 'blogApp/searchtags.html', context)
