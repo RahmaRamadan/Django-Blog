@@ -1,8 +1,9 @@
 settings.py
 env
-*/migrations/*
-**/migrations
-**/migrations/_init_.py
-**/migrations/_pycache_
-**/blogProj/_pycache_
-_pycache_
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+**/blogApp/**
+!**/blogApp
+**/blogProj/**
+!**/blogProj
