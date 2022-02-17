@@ -78,24 +78,14 @@
         <div class="col-2"></div>
         <a href="{% url 'home' %}" class="col-5 a-nav">Home </a>
       </div>
+      {% for cat in categories %}
       <div class="row">
         <div class="col-2"></div>
-        <a href="#" class="col-5 a-nav">News </a
-        ><a href="{% url 'news_add' %}" class="fa fa-plus color_i text-warning col-2"></a>
-        <a href="{% url 'news_delete' %}" class="fa fa-minus color_minus text-danger col-2"></a>
+        <a href="#" name="cat_name" class="col-5 a-nav"> {{ cat }} </a
+        ><a href="{% url 'add_category' cat %}" value={{cat}} class="fa fa-plus color_i text-warning col-2"></a>
+        <a href="{% url 'remove_category' cat %}" value={{cat}} class="fa fa-minus color_minus text-danger col-2"></a>
       </div>
-      <div class="row">
-        <div class="col-2"></div>
-        <a href="#" class="col-5 a-nav">Sports </a
-        ><a href="{% url 'sports_add' %}" class="fa fa-plus color_i text-warning col-2"></a>
-        <a href="{% url 'sports_delete' %}" class="fa fa-minus color_minus text-danger col-2"></a>
-      </div>
-      <div class="row">
-        <div class="col-2"></div>
-        <a href="#" class="col-5 a-nav">Politics </a
-        ><a href="{% url 'politics_add' %}" class="fa fa-plus color_i text-warning col-2"></a>
-        <a href="{% url 'politics_delete' %}" class="fa fa-minus color_minus text-danger col-2"></a>
-      </div>
+      {% endfor %}
     </div>
 
     <div id="content" name="content" class="main">

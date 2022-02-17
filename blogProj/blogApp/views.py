@@ -126,49 +126,38 @@ def admin_portal(request):
 
 # --------------------------------------------------------------------------------------------- 
 
+def getAllCategories(request):
+    categories = []
+    all_Categories = Category.objects.all()
+    for cat in all_Categories:
+        categories.append(cat)
+        print("===================================cat: ", cat)
+    return categories
+    
+        
+# ---------------------------------------------------------------------------------------------
 # render home page with current logged user
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
+    categories = getAllCategories(request)
     current_user = request.user
     # name = current_user.username
-    context = {'usr': current_user}
+    context = {'usr': current_user, 'categories': categories}
     return render(request, 'blogApp/home.html', context)
 
-# --------------------------------News Category-----------------------------------------
+# --------------------------------News Category------------------------------------------------
 
-@login_required(login_url='login')
-def redirectNewsAdd(request):
-    catgory_name = "news"
+def redirectCategoryAdd(request, cat):
+    # catgory_name = request.POST['cat_name']
+    catgory_name = cat
+    print("===================================cat add: ", catgory_name)
     return addFollower(request, catgory_name)
-    
-def redirectNewsDelete(request): 
-    catgory_name = "news"
-    return removeFollower(request, catgory_name)
-    
-# --------------------------------Sports Category-----------------------------------------
 
-@login_required(login_url='login')
-def redirectSportsAdd(request):
-    catgory_name = "sports"
-    return addFollower(request, catgory_name)
-    
-@login_required(login_url='login')
-def redirectSportsDelete(request):
-    catgory_name = "sports"
-    return removeFollower(request, catgory_name)
-
-# --------------------------------Politics Category-----------------------------------------
-
-@login_required(login_url='login')
-def redirectPoliticsAdd(request):
-    catgory_name = "politics"
-    return addFollower(request, catgory_name)
-    
-@login_required(login_url='login')
-def redirectPoliticsDelete(request):
-    catgory_name = "politics"
-    return removeFollower(request, catgory_name)
+def redirectCategoryRemove(request, cat):
+    # catgory_name = request.POST.get['cat_name']
+    catgory_name = cat
+    return removeFollower(request, catgory_name)    
     
 # --------------------------------------------------------------------------------------------- 
 
