@@ -1,12 +1,9 @@
 from dataclasses import fields
 from re import L
 from django import forms
-
-
-from .models import Post, Comment ,CommentReply ,ForbiddenWord
+from .models import Post, Comment, CommentReply, ForbiddenWord
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
 from . import models
 
 
@@ -25,18 +22,21 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'follower': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
 class CategoryFormAdmin(forms.ModelForm):
     class Meta:
-            model = models.Category
-            fields = ["name"]
-            
+        model = models.Category
+        fields = ["name"]
+
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-
-        fields = ('title','content','category','tags','postpicture')
+        fields = ('title', 'content', 'category', 'tags', 'postpicture')
         widgets = {
         }
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -44,9 +44,10 @@ class CommentForm(forms.ModelForm):
         fields = ('body',)
 
         widgets = {
-            'body' : forms.Textarea(attrs={'class':'form-control'}),
-            
+            'body': forms.Textarea(attrs={'class': 'form-control'}),
+
         }
+
 
 class ReplyForm(forms.ModelForm):
     class Meta:
@@ -54,16 +55,12 @@ class ReplyForm(forms.ModelForm):
         fields = ('body',)
 
         widgets = {
-            'body' : forms.Textarea(attrs={'class':'form-control'}),
-            
+            'body': forms.Textarea(attrs={'class': 'form-control'}),
+
         }
 
+
 class ForbiddenWordForm(forms.ModelForm):
-     class Meta:
+    class Meta:
         model = ForbiddenWord
         fields = ('name',)
-
-
-
-        
-

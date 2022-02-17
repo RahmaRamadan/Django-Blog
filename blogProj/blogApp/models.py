@@ -3,7 +3,6 @@ from datetime import datetime, date
 from django.contrib.auth.models import User
 
 # Create your models here.
-
 class Category(models.Model):
     class Meta:
         ordering = ['pk']
@@ -54,10 +53,10 @@ class Post(models.Model):
         return self.title + ' | ' + str(self.user)
 
 
+
 class PostTags(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    
     
 class Comment(models.Model):
     class Meta:
@@ -66,14 +65,14 @@ class Comment(models.Model):
     post = models.ForeignKey(
         Post, related_name='comments', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     date_added = models.DateTimeField(auto_now_add=False,null=True)
-    
     class Meta: 
         ordering = ('date_added',) 
-
+    
     def __str__(self):
-        return self.post.title 
-
+        return self.post.title
+    
 class CommentReply(models.Model):
     body = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -89,5 +88,6 @@ class ForbiddenWord(models.Model):
     name = models.CharField(max_length=15)
     def __str__(self):
         return self.name
+
 
 

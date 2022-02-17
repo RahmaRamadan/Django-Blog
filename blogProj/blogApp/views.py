@@ -43,7 +43,7 @@ def search_menu(request):
         return render(request, 'blogApp/searchtags.html')
 # ---------------------------------------------------------------------------------------------
 
-# likePost View
+#likePost View
 def LikeView(request, post_id):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     liked = False
@@ -55,7 +55,8 @@ def LikeView(request, post_id):
         liked = True
     return HttpResponseRedirect(reverse('postDetails', args=[str(post_id)]))
 
-# ---------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------- 
 
 
 def loginPg(request):
@@ -80,15 +81,15 @@ def loginPg(request):
                 messages.info(request, 'User name or password is incorrect')
         return render(request, 'blogApp/login.html')
 
-# ---------------------------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------------------------- 
 
 def signoutPg(request):
     logout(request)
     return redirect('login')
 
-# ---------------------------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------------------------- 
 
 def signupPg(request):
     if request.user.is_authenticated:
@@ -106,6 +107,7 @@ def signupPg(request):
 
         context = {'signup_form': signup_form}
         return render(request, 'blogApp/signup.html', context)
+
 
 # ---------------------------------------------------------------------------------------------
 
@@ -132,6 +134,7 @@ def getAllCategories(request):
 
 
 # ---------------------------------------------------------------------------------------------
+
 # render home page with current logged user
 # Create your views here.
 @login_required(login_url='login')
@@ -142,6 +145,7 @@ def home(request):
     context = {'usr': current_user,
                'categories': categories, 'home_posts': home_posts}
     return render(request, 'blogApp/home.html', context)
+
 
 # --------------------------------News Category------------------------------------------------
 # get all posts
@@ -161,11 +165,14 @@ def redirectCategoryAdd(request, cat):
     return addFollower(request, catgory_name)
 
 
+# --------------------------------Politics Category-----------------------------------------
+
 def redirectCategoryRemove(request, cat):
     catgory_name = cat
     return removeFollower(request, catgory_name)
 
 # ---------------------------------------------------------------------------------------------
+
 
 
 def addFollower(request, catgory_name):
@@ -189,8 +196,8 @@ def addFollower(request, catgory_name):
         messages.info(request, 'Successfully Sunscribed in This Category')
         return HttpResponseRedirect(reverse('home'))
 
-# ---------------------------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------------------------- 
 
 def removeFollower(request, catgory_name):
     log_user = request.user.username
@@ -265,8 +272,8 @@ def postDetails(request, post_id):
     context = {'post': post}
     return render(request, 'blogApp/postDetails.html', context)
 
-# ---------------------------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------------------------
 
 @login_required(login_url='login')
 def deletePost(request, post_id):
@@ -274,8 +281,8 @@ def deletePost(request, post_id):
     post.delete()
     return redirect('post')
 
-# ---------------------------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------------------------
 
 @login_required(login_url='login')
 def addPost(request):
@@ -337,22 +344,6 @@ def editCategory(request, category_id):
         context = {'form': form}
         return render(request, 'blogApp/editCategory.html', context)
 
-# --------------------------------------------------------------------------------------------- 
-
-@login_required(login_url='login')
-def editCategory(request, category_id):
-    category = Category.objects.get(id=category_id)
-    if (request.method == 'POST'):
-        form = CategoryForm(request.POST, instance=category)
-        if form.is_valid():
-            form.save()
-            return redirect('categories')
-        else:
-            return redirect('home')
-    else:
-        form = CategoryForm(instance=category)
-        context = {'form': form}
-        return render(request, 'blogApp/editCategory.html', context)
 
 # --------------------------------------------------------------------------------------------- 
 
@@ -363,6 +354,7 @@ def deleteCategory(request, Category_id):
     return redirect('admin-portal')
 
 # ---------------------------------------------------------------------------------------------
+
 
 @login_required(login_url='login')
 def editPost(request, post_id):
@@ -379,6 +371,7 @@ def editPost(request, post_id):
         context = {'form': form}
         return render(request, 'blogApp/editPost.html', context)
 
+
 # ---------------------------------------------------------------------------------------------
 class AddCommentView(CreateView):
     model = Comment
@@ -389,9 +382,6 @@ class AddCommentView(CreateView):
         form.instance.post_id = self.kwargs['pk']
         form.instance.user = self.request.user
         form.instance.date_added = timezone.now()
-
-# ---------------------------------------------------------------------------------------------
-
         lastoutput=""
         forbidden =ForbiddenWord.objects.all()
         forbiddenList =[]
@@ -424,8 +414,6 @@ class addReplyView(CreateView):
         form.instance.date_added = timezone.now()
         return super().form_valid(form)    
     success_url = reverse_lazy('post')
-    # success_url = reverse_lazy('postDetails',kwargs={'post_id':2})
-
 
 # --------------------------------------------------------------------------------------------- 
 
@@ -444,4 +432,5 @@ class addForbiddenWord(CreateView):
     def form_valid(self,form):
         return super().form_valid(form)    
     success_url = reverse_lazy('post')
+
 

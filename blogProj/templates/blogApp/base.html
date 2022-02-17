@@ -68,17 +68,34 @@
         font-size: 28px;
         /* color:#d63031; */
         display: block;
+
+      }
+      .color_i {
+        padding: 40px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 28px;
+        color: #00b894;
+        display: block;
+      }
+      .color_minus{
+        padding: 40px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 28px;
+        color:#d63031;
+        display: block;
       }
     </style>
   </head>
   <body class="bg-light">
- 
     <div class="sidenav bg-dark">
+    {% include 'blogApp/header.html' %}
+    {% include 'message.html' %}
+
       <div class="row">
         <div class="col-2"></div>
         <a href="{% url 'home' %}" class="col-5 a-nav">Home </a>
       </div>
-      {% for cat in categories %}
+     {% for cat in categories %}
       <div class="row">
         <div class="col-2"></div>
         <a href="{% url 'catPosts' cat %}" name="cat_name" class="col-5 a-nav"> {{ cat }} </a
@@ -86,18 +103,22 @@
         <a href="{% url 'remove_category' cat %}" value={{cat}} class="fa fa-minus color_minus text-danger col-2"></a>
      </div>
       {% endfor %}
+
     </div>
 
     <div id="content" name="content" class="main">
       <div class="row">
         <div class="col-12">
+
           {% include 'blogApp/header.html' %}
           {% block content %} 
        
           {% endblock %}
+
         </div>
       </div>
     </div>
     {% include 'blogApp/footer.html' %}
+    
   </body>
 </html>
