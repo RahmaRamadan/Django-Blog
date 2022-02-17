@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
 
-from .views import AddCommentView, LikeView , addReplyView
+
+from .views import AddCommentView, LikeView , addReplyView ,addForbiddenWord
+
 
 
 urlpatterns = [
@@ -35,11 +37,14 @@ urlpatterns = [
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
-    
+    path('addAdmin/<user_id>', views.addAdmin, name='addAdmin'),
+    path('removeAdmin/<user_id>', views.removeAdmin, name='removeAdmin'),  
     path('categoryadd/<str:cat>/', views.redirectCategoryAdd, name='add_category'),
     path('categoryremove/<str:cat>/', views.redirectCategoryRemove, name='remove_category'),
     path('catPosts/<str:cat>/', views.catPosts, name='catPosts'),
-    
+  
+    #addForbiddenWord
+     path('addForbiddenWord', addForbiddenWord.as_view(), name='addForbiddenWord'),
     
 ]
 

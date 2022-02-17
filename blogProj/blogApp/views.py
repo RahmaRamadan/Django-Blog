@@ -1,14 +1,12 @@
 from ast import Return
 from multiprocessing import context
-
 from turtle import title
 import re
-
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 # User Form Imports used in auth
-from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm
+from .forms import CategoryForm, CategoryFormAdmin, UsersForm, PostForm, CommentForm , ReplyForm ,ForbiddenWordForm
 # authentications import
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -17,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 # models
-from .models import Post, User, Comment, Category ,CommentReply
+from .models import Post, User, Comment, Category ,CommentReply ,ForbiddenWord
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -26,8 +24,6 @@ from django.utils import timezone
 from django.contrib.auth.models import Group, User
 
 # Search Feature
-
-
 def search_menu(request):
     posts = []
     if request.method == 'POST':
@@ -45,7 +41,7 @@ def search_menu(request):
         return render(request, 'blogApp/searchtags.html', context)
     else:
         return render(request, 'blogApp/searchtags.html')
-
+# ---------------------------------------------------------------------------------------------
 
 # likePost View
 def LikeView(request, post_id):
@@ -247,8 +243,6 @@ def removeAdmin(request, user_id):
     user.save()
     return users(request)
 
-# ---------------------------------------------------------------------------------------------
-
 @login_required(login_url='login')
 def blockUser(request, user_id):
     group = Group.objects.get(name='blocked')
@@ -346,6 +340,23 @@ def editCategory(request, category_id):
 # --------------------------------------------------------------------------------------------- 
 
 @login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
+
+# --------------------------------------------------------------------------------------------- 
+
+@login_required(login_url='login')
 def deleteCategory(request, Category_id):
     CategoryVar = Category.objects.get(id=Category_id)
     CategoryVar.delete()
@@ -378,9 +389,30 @@ class AddCommentView(CreateView):
         form.instance.post_id = self.kwargs['pk']
         form.instance.user = self.request.user
         form.instance.date_added = timezone.now()
-        return super().form_valid(form)
-    success_url = reverse_lazy('post')
 
+# ---------------------------------------------------------------------------------------------
+
+        lastoutput=""
+        forbidden =ForbiddenWord.objects.all()
+        forbiddenList =[]
+        for obj in forbidden:
+            forbiddenList.append(obj.name)
+        print("===========================================",forbiddenList)
+        listWords= form.instance.body.split()
+        for word in listWords:
+            if word in forbiddenList:
+                lastoutput += " "
+                for i in word:
+                   lastoutput += '*'
+                lastoutput += " "
+            else:
+                lastoutput += word
+            
+        print("===========================================",lastoutput)   
+        form.instance.body=lastoutput
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+   
 # ---------------------------------------------------------------------------------------------
 class addReplyView(CreateView):
     model = CommentReply
@@ -396,7 +428,20 @@ class addReplyView(CreateView):
 
 
 # --------------------------------------------------------------------------------------------- 
+
 def catPosts(request,cat):
     cat_posts = Post.objects.all().order_by('-id')
     context = {'cat_posts': cat_posts,'cat': cat}
     return render(request, 'blogApp/catPosts.html', context)
+
+# --------------------------------------------------------------------------------------------- 
+
+#ForbiddenWord
+class addForbiddenWord(CreateView):
+    model = ForbiddenWord
+    template_name = 'blogApp/addForbiddenWord.html'
+    form_class = ForbiddenWordForm
+    def form_valid(self,form):
+        return super().form_valid(form)    
+    success_url = reverse_lazy('post')
+
