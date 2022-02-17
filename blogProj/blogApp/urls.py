@@ -44,7 +44,11 @@ urlpatterns = [
     path('newsdel/', views.redirectNewsDelete, name='news_delete'),
     path('sportsdel/', views.redirectSportsDelete, name='sports_delete'),
     path('politicsdel/', views.redirectPoliticsDelete, name='politics_delete'),
-
+    
+    #categories pages
+    path('newsposts/', views.newsposts, name='newsposts'),
+    path('sportsposts/', views.sportsposts, name='sportsposts'),
+    path('politicsposts/', views.politicsposts, name='politicsposts'),
 
 
 

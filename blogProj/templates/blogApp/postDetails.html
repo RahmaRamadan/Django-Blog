@@ -37,12 +37,26 @@
       
     </div>
     <div class="row">
-        <div class="col-1 text-end">
-          <!-- NEWS FEED BTN -->
-          <a class="text-primary text-decoration-none" href="{% url 'post' %}">News Feed</a>
-        </div>
+      <!-- COMMENT BTN -->
+      <div class="col-2 text-right">
+        {% if user.is_authenticated %}
+        <a
+          class="text-primary text-decoration-none col-2 p-2"
+          href="{% url 'addComment' post.id %}"
+        >
+          Add Comment</a 
+        >
+      {% else %}
+          <a
+              class="text-primary text-decoration-none col-2 p-2"
+              href="{% url 'login' %}"
+            >
+              Add Comment</a 
+            >
+      {% endif %}
+      </div>
       <!-- UPDATE BTN -->
-      <div class="col-1">
+      <div class="col-1 text- center">
         {% if user.is_authenticated %}
           {% if user.id == post.user.id %}
             <a class="text-primary text-decoration-none" href="{% url 'editPost' post.id %}"> Update</a>
@@ -62,23 +76,6 @@
         {% elif request.user.is_staff %}
           <a class="text-danger text-decoration-none" href="{% url 'deletePost' post.id %}">Delete</a>
         {% endif %}
-      {% endif %}
-      </div>
-      <div class="col-2">
-        {% if user.is_authenticated %}
-        <a
-          class="text-primary text-decoration-none col-2 p-2"
-          href="{% url 'addComment' post.id %}"
-        >
-          Add Comment</a 
-        >
-      {% else %}
-          <a
-              class="text-primary text-decoration-none col-2 p-2"
-              href="{% url 'login' %}"
-            >
-              Add Comment</a 
-            >
       {% endif %}
       </div>
     </div>
