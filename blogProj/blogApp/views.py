@@ -228,6 +228,19 @@ def users(request):
     print(users)
     context = {'USERS': users}
     return render(request, 'blogApp/users.html', context)
+@login_required(login_url='login')
+def addAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=True 
+    user.save()
+    return users(request)
+
+@login_required(login_url='login')
+def removeAdmin(request, user_id):
+    user = User.objects.get(id = user_id) 
+    user.is_staff=False 
+    user.save()
+    return users(request)
 
 @login_required(login_url='login')
 def blockUser(request, user_id):
@@ -236,6 +249,7 @@ def blockUser(request, user_id):
     group.user_set.add(user)
     return users(request)
 
+@login_required(login_url='login')
 def unblockUser(request, user_id):
     group = Group.objects.get(name='blocked')
     user = User.objects.get(id = user_id) 
@@ -300,6 +314,21 @@ def categories(request):
     categories = Category.objects.all().order_by('-id')
     context = {'CATEGORIES': categories}
     return render(request, 'blogApp/categories.html', context)
+
+@login_required(login_url='login')
+def editCategory(request, category_id):
+    category = Category.objects.get(id=category_id)
+    if (request.method == 'POST'):
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+        else:
+            return redirect('home')
+    else:
+        form = CategoryForm(instance=category)
+        context = {'form': form}
+        return render(request, 'blogApp/editCategory.html', context)
 
 # --------------------------------------------------------------------------------------------- 
 

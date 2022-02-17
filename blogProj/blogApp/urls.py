@@ -29,12 +29,14 @@ urlpatterns = [
     path('addCategory', views.addCategory, name='addCategory'),
     path('categories', views.categories, name='categories'),
     path('deleteCategory/<Category_id>', views.deleteCategory, name='deleteCategory'),
-    # path('editCategory/<Category_id>', views.editPost, name='editPost'),
+    path('editCategory/<category_id>', views.editCategory, name='editCategory'),
 
     # users usrls
     path('users', views.users, name='users'),
     path('blockUser/<user_id>', views.blockUser, name='blockUser'),
     path('unblockUser/<user_id>', views.unblockUser, name='unblockUser'),
+    path('addAdmin/<user_id>', views.addAdmin, name='addAdmin'),
+    path('removeAdmin/<user_id>', views.removeAdmin, name='removeAdmin'),
 
 
     # # add follower
