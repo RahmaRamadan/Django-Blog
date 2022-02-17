@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin-portal', views.admin_portal, name='admin-portal'),
     path('post', views.post, name='post'),
     path('postDetails/<post_id>', views.postDetails, name='postDetails'),
+    path('searchmenu',views.search_menu, name='searchMenu'),
     path('addPost', views.addPost, name='addPost'),
     path('deletePost/<post_id>', views.deletePost, name='deletePost'),
     path('editPost/<post_id>', views.editPost, name='editPost'),
@@ -48,3 +49,4 @@ urlpatterns = [
 
 
 ]
+

@@ -1,5 +1,9 @@
+from ast import Return
 from multiprocessing import context
+
+from turtle import title
 import re
+
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
@@ -20,6 +24,30 @@ from django.urls import reverse,reverse_lazy
 #datetime
 from django.utils import timezone
 from django.contrib.auth.models import Group, User
+
+# Search Feature
+def search_menu(request):
+    posts = []
+    print("before if cond ===============================================================")
+    if request.method == 'POST':
+        print("search func ===========================================")
+        searched = request.POST['searched']
+        # alltags = Post.tags.all()
+        allposts = Post.objects.all()
+        for post in allposts:
+            for tag in post.tags.all():
+                if searched == tag.name:
+                    print("=====================================", tag.name)
+                    posts.append(post)
+        print("==========", posts)
+        # tags = Post.objects.filter(title=searched)
+        context = {"posts" : posts}
+        return render(request, 'blogApp/searchtags.html', context)
+        # render(request, 'blogApp/searchtags.html',
+        #  {'searched' : searched, 'tags' : tags})
+    else:
+        return render(request, 'blogApp/searchtags.html')
+
 
 # likePost View
 @login_required(login_url='login')
