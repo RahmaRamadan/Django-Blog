@@ -146,8 +146,8 @@ def getAllCategories(request):
 def home(request):
     categories = getAllCategories(request)
     current_user = request.user
-    context = {'usr': current_user, 'categories': categories, 'home_posts' : home_posts}
     home_posts = Post.objects.all().order_by('-id')
+    context = {'usr': current_user, 'categories': categories, 'home_posts' : home_posts}
     return render(request, 'blogApp/home.html', context)
 
 # --------------------------------News Category------------------------------------------------
