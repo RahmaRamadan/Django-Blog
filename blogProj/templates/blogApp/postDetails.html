@@ -30,7 +30,19 @@
           Tags : {% for tag in post.tags.all %} {{ tag.name }} {% endfor %}
         </h5>
         <!-- <h5>AUTHOR: {{ post.user }}</h5> -->
-        
+          <div>
+            <h5>Commnets</h5>
+            {% if not post.comments.all %}
+            No Comments Yet :( 
+                {% else %}
+                  {% for comment in post.comments.all %}
+            <br />
+            {{ comment.user.username }} : {{ comment.body }} 
+            <br/>
+            {{ comment.date_added }} 
+            {% endfor %} {% endif %}
+
+          </div>
         </div>
 
       <br />
