@@ -4,6 +4,7 @@ from .models import User,Category,Post,Comment,Tag, UsersCategories, PostTags ,C
 
 
 
+
 class UserCategoryInline(admin.TabularInline):
     model = UsersCategories
     extra = 1

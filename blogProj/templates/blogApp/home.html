@@ -10,6 +10,9 @@
 
   <body style="background-color: #ecf0f1 !important">
     {% extends 'blogApp/base.html' %} {% load static %} {% block content %}
+    <!-- {% for msg in messages %} -->
+    <p id ='messages' class="text-primary">{{msg}}</p>
+    <!-- {% endfor %}
     <h1 class="text-dark">Posts</h1>
     <!-- POST CONTENT -->
     <ul class="text-dark">
