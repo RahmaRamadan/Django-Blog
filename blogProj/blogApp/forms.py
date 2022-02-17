@@ -2,7 +2,7 @@ from dataclasses import fields
 from re import L
 from django import forms
 
-from .models import Post ,Comment
+from .models import Post, Comment
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -37,12 +37,16 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'follower': forms.Select(attrs={'class': 'form-control'}),
         }
-
-
+class CategoryFormAdmin(forms.ModelForm):
+    class Meta:
+            model = models.Category
+            fields = ["name"]
+            
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         # fields = ('__all__')
+
         fields = ('title','content','category','tags','postpicture')
         widgets = {
             # 'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -53,16 +57,15 @@ class PostForm(forms.ModelForm):
             # 'postpicture':forms.ClearableFileInput(attrs={'class': 'form-control'})
         }
 
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('body',)
+
         widgets = {
             'body' : forms.Textarea(attrs={'class':'form-control'}),
             
         }
 
         
-
 

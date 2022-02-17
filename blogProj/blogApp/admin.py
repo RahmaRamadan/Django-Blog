@@ -38,8 +38,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     fieldsets = (
-        ["post info", {'fields': ["title", "postpicture",
-                                  "content", "category", "user"]}],
+        ["post info", {'fields': ["title", "postpicture", "content", "category", "user"]}],
     )
     def get_tags(self,obj):
         return "\n".join([p.name for p in obj.tags.all()])
