@@ -7,4 +7,4 @@
 > If the user is logged in as a normal user, then he can like or comment on the post and subscribe/unsubscribe category. 
 > If post is chosen its details will be displayed with all comments and likes. 
 > Searching for any post with category or tag. 
-> If the logged in user is as an admin user, then he can make all CRUD operations on posts or categories.
+> If the user logged in as an admin user, then he can make all CRUD operations on posts or categories.
