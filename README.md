@@ -122,13 +122,13 @@ DATABASES =
 - Like and dislike counter on the posts
 - A reply to each comment
 
-### - What Can Normal User DO?
+### 6- What Can Normal User DO?
 - He can see posts and categories
 - Search by tag name
 - If logged in he can like, dislike, comment or reply to another user comment on a post
 - If blocked, he cannot log into the system on the login page (Your account is locked, please contact an admin)
 
-### - What Can Admin User DO?
+### 7- What Can Admin User DO?
 - Admin users can make CRUD on posts
 - Admin users can make CRUD on categories
 - Admin users can block or unblock users
