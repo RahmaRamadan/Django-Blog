@@ -24,7 +24,7 @@ block, unblock users, promote others to be admins
 - MYSQL
 
 ## Setup
-Required to install in yout system:
+Required to install in your system:
 - Github Desktop / Git Bash
 
 Then in yout terminal
