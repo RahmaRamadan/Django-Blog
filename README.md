@@ -148,7 +148,8 @@ DATABASES =
 https://user-images.githubusercontent.com/36454500/162214565-698691ea-159b-45ea-a0c5-139cf3a31f90.mp4
 
 ## Who we Are?
-- Intensive Code Camp (ICC) - Information Technology Institute (ITI) - The Egyptian Ministry of Communications and Information Technology (MCIT) Students & Teammates, we are a Full Stack Web Development graduates from ITI - Python Stack Track
+- Intensive Code Camp (ICC) - Information Technology Institute (ITI) - The Egyptian Ministry of Communications and Information Technology (MCIT) Students & Teammates
+- We are a Full Stack Web Development Graduates from ITI - Python Stack Track
 - We are introducing a Django Blog with many features using Django Templates as a front-end and mysql as a database manager
 
 ### - Team members
