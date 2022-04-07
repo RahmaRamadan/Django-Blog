@@ -51,7 +51,7 @@ $ pip install -r requirements.txt
   * password: admin 
   * name: Blog-DB
   
-- open settings.py add this in database section
+- Open settings.py add this in database section
  ```
 DATABASES = 
   {
@@ -63,8 +63,12 @@ DATABASES =
   },
 }  
 ```
-- python manage.py migrate
-- python manage.py runserver
+```
+$ python manage.py migrate
+```
+```
+$ python manage.py runserver
+```
 
 ## Features
 ### This project is a responsive web application that contains:
@@ -157,7 +161,7 @@ https://user-images.githubusercontent.com/36454500/162214565-698691ea-159b-45ea-
 | :-----: | :-: |
 | Rahma Ramadan | rahmaramadan23@gmail.com |
 | Yousef Ahmed | yousefa.mohamed12@gmail.com |
-| Shrouk Hussien | rahmaramadan23@gmail.com |
+| Shrouk Hussien | shrouq.hussein.elsayed@gmail.com |
 | Sherif Elshafaey | sherifelshaf3y@yahoo.com |
 | Nehal Mohamed | nehalhdev@outlook.com |
 
